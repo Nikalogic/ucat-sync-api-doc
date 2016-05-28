@@ -121,44 +121,44 @@ authKey | ключ доступа
 ```javascript
 [
   {
-    "GTIN": "4820043334742",
-    "ReplacedTradeItemIdentification": null,        
-    "InformationProviderGLN": "9864276816716",
-    "InternalSupplierCode": null,
-    "BarCodeType": "EAN_UCC_13_SYMBOL",
-    "LanguageSpecificBrandNameRu": "Марка Промо",
-    "LanguageSpecificBrandNameUk": "Марка Промо",
-    "LanguageSpecificBrandNameEn": "Marka Promo",
-    "LanguageSpecificShortBrandNameRu": "Мар Про",
-    "LanguageSpecificShortBrandNameUk": "Мар Про",
-    "LanguageSpecificShortBrandNameEn": "Mar Pro",
-    "DescriptionTextRu": "Пряники Marka Promo Яблочный сад с начинкой 0,4кг",
-    "DescriptionTextUk": "Пряники Marka Promo Яблуневий сад з начинкою 0,4кг",
-    "DescriptionTextEn": null,
-    "ShortDescriptionTextRu": "Пряники Mark Pro Яблоч сад с начин 0,4кг",
-    "ShortDescriptionTextUk": "Пряники Mark Pro Яблун сад з начин 0,4кг",
-    "ShortDescriptionTextEn": null,
-    "FunctionalNameTextRu": "Печенье\/Сухари (длительного хранения)",
-    "FunctionalNameTextUk": "Печиво \/ Сухарі (тривалого зберігання)",
-    "FunctionalNameTextEn": "Biscuits\/Cookies (Shelf Stable)",
-    "BrandId": "1918",
-    "BrandName": "Marka Promo",
-    "ShortBrandName": null,
-    "SubBrandId": null,
-    "SubBrand": null,
-    "CountryOfOrigin": "804",
-    "CountryOfLastProcessing": "804",
-    "ManufacturerUcatId": "2810",
-    "ManufacturerGLN": null,
-    "ManufacturerNameRu": "ПАО \"Запорожский хлебокомбинат №1\"",
-    "ManufacturerNameUk": "ПАТ \"Запорізький хлібокомбінат №1\"",
-    "ManufacturerNameEn": "PJSC \"Zaporizkyy khlibokombinat №1\"",
-    "ManufacturingPlantGLN": null,
-    "AdditionalTradeItemDescriptionRu": null,
-    "AdditionalTradeItemDescriptionUk": null,
-    "AdditionalTradeItemDescriptionEn": null,
-    "version": "9",
-    "OriginalDescriptionRu": null,
+    "GTIN": "4820043334742", //Штрихкод товара
+    "ReplacedTradeItemIdentification": null, // Штрихкод старого товара, который заменяет текущий      
+    "InformationProviderGLN": "9864276816716", // GTIN компании (поставщика), которая предоставила информацию о товаре 
+    "InternalSupplierCode": null, // Артикул товара (SKU) в системе поставщика
+    "BarCodeType": "EAN_UCC_13_SYMBOL", // тип штрихкода товара
+    "LanguageSpecificBrandNameRu": "Марка Промо", // Название бренда на русском языке
+    "LanguageSpecificBrandNameUk": "Марка Промо", // Название бренда на украинском языке
+    "LanguageSpecificBrandNameEn": "Marka Promo", // Название бренда на английском языке
+    "LanguageSpecificShortBrandNameRu": "Мар Про", // Короткое название бренда на русском языке
+    "LanguageSpecificShortBrandNameUk": "Мар Про", // Короткое название бренда на украинском языке
+    "LanguageSpecificShortBrandNameEn": "Mar Pro", // Короткое название бренда на английском языке
+    "DescriptionTextRu": "Пряники Marka Promo Яблочный сад с начинкой 0,4кг", // Полное название товара на русском 
+    "DescriptionTextUk": "Пряники Marka Promo Яблуневий сад з начинкою 0,4кг", // Полное название товара на украинском
+    "DescriptionTextEn": null, // Полное название товара на английском
+    "ShortDescriptionTextRu": "Пряники Mark Pro Яблоч сад с начин 0,4кг", // Короткое название товара на русском языке
+    "ShortDescriptionTextUk": "Пряники Mark Pro Яблун сад з начин 0,4кг", // Короткое название товара на украинском языке
+    "ShortDescriptionTextEn": null, // Короткое название товара на английском языке
+    "FunctionalNameTextRu": "Печенье\/Сухари (длительного хранения)", // Название категории товара на русском языке
+    "FunctionalNameTextUk": "Печиво \/ Сухарі (тривалого зберігання)", // Название категории товара на украинском языке
+    "FunctionalNameTextEn": "Biscuits\/Cookies (Shelf Stable)", // Название категории товара на английском языке
+    "BrandId": "1918", // Код бренда в справочнике Брендов каталога uCat
+    "BrandName": "Marka Promo", // Название бренда в каталоге
+    "ShortBrandName": null, // Короткое название бренда в каталоге
+    "SubBrandId": null, // Код суб.бренда в каталоге uCat
+    "SubBrand": null, // Название суб.бренда в каталоге
+    "CountryOfOrigin": "804", // Код страны производства по международному справочнику
+    "CountryOfLastProcessing": "804", // Код страны последней обработки товара
+    "ManufacturerUcatId": "2810", // Код производителя в каталоге uCat
+    "ManufacturerGLN": null, // GLN номер производителя товара
+    "ManufacturerNameRu": "ПАО \"Запорожский хлебокомбинат №1\"", // Название производителя на русском языке
+    "ManufacturerNameUk": "ПАТ \"Запорізький хлібокомбінат №1\"", // Название производителя на украинском языке
+    "ManufacturerNameEn": "PJSC \"Zaporizkyy khlibokombinat №1\"", // Название производителя на английском языке
+    "ManufacturingPlantGLN": null, 
+    "AdditionalTradeItemDescriptionRu": null, // Дополнительное описание товара на русском языке
+    "AdditionalTradeItemDescriptionUk": null, // Дополнительное описание товара на украинском языке
+    "AdditionalTradeItemDescriptionEn": null, // Дополнительное описание товара на английском языке
+    "version": "9", // Версия изменений товара в каталоге uCat (сколько раз вносились изменения в данный товар)
+    "OriginalDescriptionRu": null, // Оринигалное название с упаковки на русском
     "OriginalDescriptionUk": null,
     "OriginalDescriptionEn": null,
     "DistributorNameRu": null,
