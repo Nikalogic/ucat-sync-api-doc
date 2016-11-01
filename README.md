@@ -38,7 +38,9 @@ https://client.ucat.com.ua/api-sync/v1/manufacturers?authKey=auth_key
 
 **Результат**
 - код ответа сервера: 200 OK
-- ```javascript
+- тело ответа:
+ 
+```javascript
 [
   {
     name: "- Тестовый Дистрибьютор -",
