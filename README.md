@@ -122,6 +122,58 @@ authKey | ключ доступа
 9. Кол-во подписок|GET|api-sync/v1/get-count-subscribe-product|Запрос возвращает количество различных подписок
 10. Список GTIN базовых единиц, на которые была оформлена подписка|GET|api-sync/v1/get-subscribe-product-gtin|После оформлении подписки, клиент может проверять какие товары ему доступны по подписке
 
+###4. Получить информацию только о фотографиях
+
+В запросе на получение фотографий, нужно указать GLN поставщика и GTIN (штрихкод) товара.
+
+**Формат запроса**
+```html
+https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компании]/products/[GTIN]/images?authKey=<ключ авторизации>
+```
+Тип запроса: **GET**
+
+**Пример ответа в формате JSON**
+Если все параметры правильные, товар есть в базе и доступен
+```javascript
+[
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_p.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=KvOIyNVv9653BpEQIZ78yKc0GZI%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_p.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_p.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_p.jpg",
+    planogram: "true" // даный флаг, обозначает что фото сделано с лицевой стороны
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_2.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=DEC3H6nFVbtbiPeK%2BiKBACyz7do%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_2.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_2.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_2.jpg",
+    planogram: "false"
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_1.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=gfcdqDwapmgzBscmUW2HL9%2B3m1M%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_1.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_1.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_1.jpg",
+    planogram: "false"
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_3.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=GlqkfS841ZuEPbrqUId5%2FWUfvRk%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_3.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_3.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_3.jpg",
+    planogram: "false"
+  }
+]
+```
+
+Если товар не найден в базе или не доступен
+```javascript
+{
+  code: "404 Not Found",  
+  error: "Product photos that you requested is not found."
+}
+```
 
 ###5. Передать статус обработки товара торговой сетью###
 Для того, что-бы поставщики, знали статус обработки товаров торговой сетью, нужно передать этот статус в каталог, после того, как торговая сеть получает информацию о товаре.
