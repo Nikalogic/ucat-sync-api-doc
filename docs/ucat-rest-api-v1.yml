@@ -2,7 +2,7 @@
 # as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
-  title: uCat REST API 
+  title: uCat REST API
   description: Автоматизируйте ваши процессы с помощью API
   version: "1.0.0"
 # the domain of the service
@@ -17,9 +17,15 @@ produces:
 paths:
   /manufacturers:
     get:
-      summary: 1. Список поставщиков 
+      summary: 1. Список поставщиков
       description: |
         Работает без подписки. Выводить поставщиков зарегистрированных в каталоге.
+      parameters:
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
       tags:
         - Поставщики
       responses:
@@ -141,6 +147,13 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/CIC'
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Ответ от торговой сети
       responses:
         201:
           description: Положительный ответ, означает что ответ записан в базу данных
@@ -154,9 +167,16 @@ paths:
       parameters:
         - name: GTIN
           in: path
-          description: штрихкод товара который нужно найти 
-          required: true 
-          type: integer 
+          description: штрихкод товара который нужно найти
+          required: true
+          type: integer
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Продукты
       responses:
         200:
           description: Массив найденных продуктов. Товаров может быть несколько, если один и тот же товар поставляют разные дистрибьюторы
@@ -171,6 +191,16 @@ paths:
       summary: 7. Импорт артикулов торговой сети в базу uCat
       description: |
         Торговая сеть имеет возможность загрузить в каталог внутриние артикулы товаров и привязать их к штрихкодам в базе. Для загрузки нужно передать в каталог CSV файл в специальном формате с данными.
+      produces:
+        - application/json
+      parameters:
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Загрузка SKU
       responses:
         200:
           description: Ответ все хорошо
@@ -187,6 +217,14 @@ paths:
         Данный запрос используется для того, чтобы ритейлер не проверял каждый раз все товары и не сравнивал их текущие значения со старыми значениями добавлен запрос к API который показывает список штрих-кодов, которые добавились или изменились за время, прошедшее с того момента, когда ритейлера забирал данные последний раз.
       produces:
         - application/json
+      parameters:
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Продукты
       responses:
         200:
           description: Массив изменившихся товаров по постоавщикм
@@ -198,6 +236,16 @@ paths:
     get:
       summary: 9. Количество подписок
       description: Запрос возвращает количество оформленных подписок в каталоге
+      produces:
+        - application/json
+      parameters:
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Подписки
       responses:
         200:
           description: Объект с количеством различных подписок
@@ -207,10 +255,20 @@ paths:
     get:
       summary: 10. Список доступных GTIN базовых единиц на которые была оформлена подписка
       description: Запрос возвращает все доступные штрихкоды из каталога для Торговой Сети по подписке
+      produces:
+        - application/json
+      parameters:
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Продукты
       responses:
         200:
           description: Массив штрихкодов доступных для торговой сети
-          schema: 
+          schema:
               $ref: '#/definitions/GTIN'
         404:
           description: Если у торговой сети не оформленно ни одной подписки возвращается объект ошибки
@@ -228,10 +286,17 @@ paths:
           description: Код справочников, которые возвращаются в значении по товару
           required: true
           type: string
+        - name: authKey
+          in: query
+          description: ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Справочники
       responses:
-        200: 
+        200:
           description: Объект одной записи из справочников
-          schema: 
+          schema:
             $ref: '#/definitions/HandbookItem'
 definitions:
   GTIN:
@@ -240,7 +305,7 @@ definitions:
   HandbookItem:
     type: object
     properties:
-      hanbookName: 
+      hanbookName:
         type: string
         description: Название справочника, которому пренадлежит значение
       codeValue:
@@ -258,10 +323,10 @@ definitions:
   NotFoundError:
     type: object
     properties:
-      code: 
+      code:
         type: string
         description: code and title of error
-      message: 
+      message:
         type: string
         description: text of the error
   Subscriptions:
@@ -281,14 +346,14 @@ definitions:
         description: Кол-во доступных базовых единиц, суммирует штрихкоды по всем видам подписок
   ChangedGTINs:
     type: object
-    properties: 
-      GLN: 
+    properties:
+      GLN:
         type: integer
         description: GLN номер поставщика товаров
       nameUk:
         type: string
         description:  Название поставщика на украинском языке
-      OKPO: 
+      OKPO:
         type: integer
         description: ЕДРПОУ номер поставщика
       changedGTINs:
@@ -299,11 +364,11 @@ definitions:
       newGTINs:
         type: array
         items:
-          type: string  
+          type: string
           description: Массив новых штрихкодов, которые торговая сеть ни разу не получала
   UploadSKUOk:
     type: object
-    properties: 
+    properties:
       success:
         type: string
         description: true/false
@@ -330,7 +395,7 @@ definitions:
       providerGLN:
         type: string
         description: GLN торговой сети, которая передает статус по товару
-      GTIN: 
+      GTIN:
         type: string
         description: штрихкод товара
       versionProduct:
@@ -350,19 +415,19 @@ definitions:
   Product:
     type: object
     properties:
-      GTIN: 
+      GTIN:
         type: string
-        description: штрихкод товара в международном формате GDSN http://www.gs1.org/gtin 
+        description: штрихкод товара в международном формате GDSN http://www.gs1.org/gtin
       ReplacedTradeItemIdentification:
         type: string
         description: штриход старого товара, который был заменен текущим товаром
       InformationProviderGLN:
         type: string
         description: GLN номер поставщика, который предоставил информацию о товаре в каталог
-  ProductImage: 
+  ProductImage:
     type: object
-    properties: 
-      original: 
+    properties:
+      original:
         type: string
         description: Временная ссылка на оринигальное изобрежение товара в оригинальном разрешении
       600x600:
@@ -374,7 +439,7 @@ definitions:
       50x50:
         type: string
         description: Постоянная ссылка на изображение с разрешением 50х50рх хотя бы по одной из сторон
-      planograma: 
+      planograma:
         type: boolean
         description: Флаг, который показывает является ли изображение планограмой
   Error:
