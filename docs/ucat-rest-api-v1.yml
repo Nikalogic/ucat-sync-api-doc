@@ -100,10 +100,20 @@ paths:
           description: Иерахический объект одного продукта
           schema:
             $ref: '#/definitions/Product'
-        '403':
-          description: Unexpected error
+        '400':
+          description: Not all parameters passed (Не все параметры переданы)
           schema:
             $ref: '#/definitions/Error'
+        '403':
+          description: >-
+            This product was not published for your company (Товар не
+            опубликован на вашу компанию)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Продукт не найден или не опубликован
+          schema:
+            $ref: '#/definitions/NotFoundError'
   '/manufacturers/{GLN}/products/{GTIN}/images':
     get:
       summary: 4. Изображения одного товара
