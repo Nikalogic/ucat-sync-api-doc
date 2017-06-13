@@ -1,16 +1,11 @@
-# this is an example of the Uber API
-# as a demonstration of an API spec in YAML
 swagger: '2.0'
 info:
   title: uCat REST API
   description: Автоматизируйте ваши процессы с помощью API
-  version: "1.0.0"
-# the domain of the service
+  version: 1.0.0
 host: client.ucat.com.ua
-# array of all schemes that your API supports
 schemes:
   - https
-# will be prefixed to all paths
 basePath: /api-sync/v1
 produces:
   - application/json
@@ -18,8 +13,9 @@ paths:
   /manufacturers:
     get:
       summary: 1. Список поставщиков
-      description: |
-        Работает без подписки. Выводить поставщиков зарегистрированных в каталоге.
+      description: >
+        Работает без подписки. Выводить поставщиков зарегистрированных в
+        каталоге.
       parameters:
         - name: authKey
           in: query
@@ -29,17 +25,18 @@ paths:
       tags:
         - Поставщики
       responses:
-        200:
+        '200':
           description: Массив поставщиков
           schema:
             type: array
             items:
               $ref: '#/definitions/Manufacturer'
-  /manufacturers/{gln}/products:
+  '/manufacturers/{gln}/products':
     get:
       summary: 2. Продукты одного Поставщика
-      description: |
-        Запрос возвращает массив штрихкодов указаного поставщика, которые доступны тому, кто делает запрос
+      description: >
+        Запрос возвращает массив штрихкодов указаного поставщика, которые
+        доступны тому, кто делает запрос
       produces:
         - application/json
       parameters:
@@ -57,13 +54,13 @@ paths:
       tags:
         - Продукты
       responses:
-        200:
-          description: Массив штриходов, которые поставщик публикует в каталоге
+        '200':
+          description: 'Массив штриходов, которые поставщик публикует в каталоге'
           schema:
             type: array
             items:
               $ref: '#/definitions/GLN'
-  /manufacturers/{GLN}/products/{GTIN}:
+  '/manufacturers/{GLN}/products/{GTIN}':
     get:
       summary: 3. Подробная информация о товаре
       description: |
@@ -85,8 +82,10 @@ paths:
           format: int64
         - name: fields
           in: query
-          description: |
-            параметр принимает список полей, через запятую, которые должны возвратиться в json-объекте товара. Всегда обязательным будет поле ChildGTIN, по которому строится иерархия.
+          description: >
+            параметр принимает список полей, через запятую, которые должны
+            возвратиться в json-объекте товара. Всегда обязательным будет поле
+            ChildGTIN, по которому строится иерархия.
           required: true
           type: string
         - name: authKey
@@ -97,19 +96,29 @@ paths:
       tags:
         - Продукты
       responses:
-        200:
+        '200':
           description: Иерахический объект одного продукта
           schema:
             $ref: '#/definitions/Product'
-        403:
-          description: Unexpected error
+        '400':
+          description: Not all parameters passed (Не все параметры переданы)
           schema:
             $ref: '#/definitions/Error'
-  /manufacturers/{GLN}/products/{GTIN}/images:
+        '403':
+          description: >-
+            This product was not published for your company (Товар не
+            опубликован на вашу компанию)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Продукт не найден или не опубликован
+          schema:
+            $ref: '#/definitions/NotFoundError'
+  '/manufacturers/{GLN}/products/{GTIN}/images':
     get:
       summary: 4. Изображения одного товара
       description: |
-        Запрос возвращает массив изобржений в различном разрешении
+        Запрос возвращает массив изображений в различном разрешении
       produces:
         - application/json
       parameters:
@@ -133,18 +142,20 @@ paths:
       tags:
         - Изображения
       responses:
-        200:
-          description: Объект с изображениями, которые пренадлежать продукту
+        '200':
+          description: 'Объект с изображениями, которые пренадлежать продукту'
           schema:
             $ref: '#/definitions/ProductImage'
-        404:
+        '404':
           description: Not Found
           schema:
             $ref: '#/definitions/NotFoundError'
   /response:
     post:
-      description: |
-        Для того, что-бы поставщики, знали статус обработки товаров торговой сетью, нужно передать этот статус в каталог, после того, как торговая сеть получает информацию о товаре.
+      description: >
+        Для того, что-бы поставщики, знали статус обработки товаров торговой
+        сетью, нужно передать этот статус в каталог, после того, как торговая
+        сеть получает информацию о товаре.
       operationId: catalog_item_confirmation
       summary: 5. Передать статус обработки товара торговой сетью
       parameters:
@@ -161,13 +172,14 @@ paths:
       tags:
         - Ответ от торговой сети
       responses:
-        201:
-          description: Положительный ответ, означает что ответ записан в базу данных
-  /products/{GTIN}/search:
+        '201':
+          description: 'Положительный ответ, означает что ответ записан в базу данных'
+  '/products/{GTIN}/search':
     get:
       summary: 6. Поиск товарной позиции по штрихкоду товара
-      description: |
-        Пользователи REST API имеют возможность искать товар по штрихкоду, среди тех, к которым у них есть доступ
+      description: >
+        Пользователи REST API имеют возможность искать товар по штрихкоду, среди
+        тех, к которым у них есть доступ
       produces:
         - application/json
       parameters:
@@ -184,19 +196,23 @@ paths:
       tags:
         - Продукты
       responses:
-        200:
-          description: Массив найденных продуктов. Товаров может быть несколько, если один и тот же товар поставляют разные дистрибьюторы
+        '200':
+          description: >-
+            Массив найденных продуктов. Товаров может быть несколько, если один
+            и тот же товар поставляют разные дистрибьюторы
           schema:
             $ref: '#/definitions/Product'
-        404:
+        '404':
           description: Not Found
           schema:
             $ref: '#/definitions/NotFoundError'
   /upload-sku:
     post:
       summary: 7. Импорт артикулов торговой сети в базу uCat
-      description: |
-        Торговая сеть имеет возможность загрузить в каталог внутриние артикулы товаров и привязать их к штрихкодам в базе. Для загрузки нужно передать в каталог CSV файл в специальном формате с данными.
+      description: >
+        Торговая сеть имеет возможность загрузить в каталог внутриние артикулы
+        товаров и привязать их к штрихкодам в базе. Для загрузки нужно передать
+        в каталог CSV файл в специальном формате с данными.
       produces:
         - application/json
       parameters:
@@ -208,19 +224,23 @@ paths:
       tags:
         - Загрузка SKU
       responses:
-        200:
+        '200':
           description: Ответ все хорошо
           schema:
             $ref: '#/definitions/UploadSKUOk'
-        400:
+        '400':
           description: Unexpected error
           schema:
             $ref: '#/definitions/UploadSKUOk'
   /last-changed-gtins:
     get:
       summary: 8. Список изменившихся товаров
-      description: |
-        Данный запрос используется для того, чтобы ритейлер не проверял каждый раз все товары и не сравнивал их текущие значения со старыми значениями добавлен запрос к API который показывает список штрих-кодов, которые добавились или изменились за время, прошедшее с того момента, когда ритейлера забирал данные последний раз.
+      description: >
+        Данный запрос используется для того, чтобы ритейлер не проверял каждый
+        раз все товары и не сравнивал их текущие значения со старыми значениями
+        добавлен запрос к API который показывает список штрих-кодов, которые
+        добавились или изменились за время, прошедшее с того момента, когда
+        ритейлера забирал данные последний раз.
       produces:
         - application/json
       parameters:
@@ -232,11 +252,11 @@ paths:
       tags:
         - Продукты
       responses:
-        200:
+        '200':
           description: Массив изменившихся товаров по постоавщикм
           schema:
-              $ref: '#/definitions/ChangedGTINs'
-        304:
+            $ref: '#/definitions/ChangedGTINs'
+        '304':
           description: Если нет новых и измененных товаров - код ответа 304
   /get-count-suscribe-product:
     get:
@@ -253,14 +273,18 @@ paths:
       tags:
         - Подписки
       responses:
-        200:
+        '200':
           description: Объект с количеством различных подписок
           schema:
             $ref: '#/definitions/Subscriptions'
   /get-subscribe-product-gtin:
     get:
-      summary: 10. Список доступных GTIN базовых единиц на которые была оформлена подписка
-      description: Запрос возвращает все доступные штрихкоды из каталога для Торговой Сети по подписке
+      summary: >-
+        10. Список доступных GTIN базовых единиц на которые была оформлена
+        подписка
+      description: >-
+        Запрос возвращает все доступные штрихкоды из каталога для Торговой Сети
+        по подписке
       produces:
         - application/json
       parameters:
@@ -272,24 +296,28 @@ paths:
       tags:
         - Продукты
       responses:
-        200:
+        '200':
           description: Массив штрихкодов доступных для торговой сети
           schema:
-              $ref: '#/definitions/GTIN'
-        404:
-          description: Если у торговой сети не оформленно ни одной подписки возвращается объект ошибки
+            $ref: '#/definitions/GTIN'
+        '404':
+          description: >-
+            Если у торговой сети не оформленно ни одной подписки возвращается
+            объект ошибки
           schema:
             $ref: '#/definitions/NotFoundError'
-  /handbook/search/{CODE}:
+  '/handbook/search/{CODE}':
     get:
       summary: 11. Расшифровка значения справочника
-      description:  Передавая код любого справочника, можно получить название справочника и расшифровку значения
+      description: >-
+        Передавая код любого справочника, можно получить название справочника и
+        расшифровку значения
       produces:
         - application/json
       parameters:
         - name: CODE
           in: path
-          description: Код справочников, которые возвращаются в значении по товару
+          description: 'Код справочников, которые возвращаются в значении по товару'
           required: true
           type: string
         - name: authKey
@@ -300,20 +328,173 @@ paths:
       tags:
         - Справочники
       responses:
-        200:
+        '200':
           description: Объект одной записи из справочников
           schema:
             $ref: '#/definitions/HandbookItem'
+  '/images/{GTIN}':
+    get:
+      summary: 12. Изображения одного товара
+      description: Запрос возвращает массив изобржений в различных разрешениях
+      produces:
+        - application/json
+      parameters:
+        - name: GTIN
+          in: path
+          description: GTIN(штрихкод) товара
+          type: string
+          required: true
+        - name: authKey
+          in: query
+          description: Ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Изображения
+      responses:
+        '200':
+          description: Массив изображений товара разных расрешений
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductImage'
+        '404':
+          description: >-
+            Product or its images not found (Товар или его изображения не
+            найдены)
+          schema:
+            $ref: '#/definitions/NotFoundError'
+  /manufacturer-activity:
+    get:
+      summary: 13. Информация об активности поставщика
+      description: Запрос возвращает информацию про поставщика по ОКПО
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: query
+          description: ОКПО поставщика
+          type: integer
+          required: true
+        - name: authKey
+          in: query
+          description: Ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Поставщики
+      responses:
+        '200':
+          description: Объект с информацией об активности поставщика
+          schema:
+            $ref: '#/definitions/ClientActivityStatus'
+        '400':
+          description: Invalid parameter value (Неправильные параметры запроса)
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: Data is not available (Информация недоступна)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Data not found (Информация не найдена)
+          schema:
+            $ref: '#/definitions/Error'
+  /manufacturers-activity:
+    get:
+      summary: 14. Информация об активности поставщиков
+      description: Запрос возвращает информацию про поставщиков с постраничной навигацией
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          in: query
+          description: Номер страницы
+          type: integer
+          required: true
+        - name: authKey
+          in: query
+          description: Ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Поставщики
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+            properties:
+              items:
+                type: array
+                items:
+                  $ref: '#/definitions/ClientActivityStatus'
+              _links:
+                type: object
+                description: >-
+                  Object with links to navigate in available data (Объект с
+                  ссылками для навигации)
+                properties:
+                  self:
+                    type: string
+                    format: link
+                    description: Link to current page (Ссылка на текущую страницу)
+                  next:
+                    type: string
+                    format: link
+                    description: Link to next page (Ссылка на следующую страницу)
+                  last:
+                    type: string
+                    format: link
+                    description: Link to last page (Ссылка на последнюю страницу)
+              _meta:
+                type: object
+                description: Meta data
+                properties:
+                  totalCount:
+                    type: integer
+                    format: int16
+                    description: >-
+                      Total count of ClientActivityStatus (Суммарное количество
+                      ClientActivityStatus)
+                  pageCount:
+                    type: integer
+                    format: int16
+                    description: Total count of pages (Суммарное количество страниц)
+                  currentPage:
+                    type: integer
+                    format: int16
+                    description: Number of current page (Номер текущей страницы)
+                  perPage:
+                    type: integer
+                    format: int16
+                    description: >-
+                      Amount of ClientActivityStatus per page (Количество
+                      записей на 1 страницу)
+        '400':
+          description: Неверны параметры запроса
+          schema:
+            $ref: '#/definitions/Error'
+        '403':
+          description: Информация недоступна
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Информация не найдена
+          schema:
+            $ref: '#/definitions/NotFoundError'
 definitions:
   GTIN:
     type: integer
-    description: GTIN - это штрихкодо товара, валидный по стандартам GS1 может иметь от 8 до 14 символов в длину
+    description: >-
+      GTIN - это штрихкодо товара, валидный по стандартам GS1 может иметь от 8
+      до 14 символов в длину
   HandbookItem:
     type: object
     properties:
       hanbookName:
         type: string
-        description: Название справочника, которому пренадлежит значение
+        description: 'Название справочника, которому пренадлежит значение'
       codeValue:
         type: string
         description: Код справочника
@@ -349,7 +530,9 @@ definitions:
         description: Кол-во оформленных подписок на штрихкоды
       countSubscribeProduct:
         type: integer
-        description: Кол-во доступных базовых единиц, суммирует штрихкоды по всем видам подписок
+        description: >-
+          Кол-во доступных базовых единиц, суммирует штрихкоды по всем видам
+          подписок
   ChangedGTINs:
     type: object
     properties:
@@ -358,7 +541,7 @@ definitions:
         description: GLN номер поставщика товаров
       nameUk:
         type: string
-        description:  Название поставщика на украинском языке
+        description: Название поставщика на украинском языке
       OKPO:
         type: integer
         description: ЕДРПОУ номер поставщика
@@ -366,12 +549,14 @@ definitions:
         type: array
         items:
           type: string
-          description: Массив содержит список изменившихся штрихкодов с того времени, когда торговая сеть последний раз забирала обновлениея по товару
+          description: >-
+            Массив содержит список изменившихся штрихкодов с того времени, когда
+            торговая сеть последний раз забирала обновлениея по товару
       newGTINs:
         type: array
         items:
           type: string
-          description: Массив новых штрихкодов, которые торговая сеть ни разу не получала
+          description: 'Массив новых штрихкодов, которые торговая сеть ни разу не получала'
   UploadSKUOk:
     type: object
     properties:
@@ -391,63 +576,90 @@ definitions:
         description: Название компании поставщика
       OKPO:
         type: string
-        description: ЄДРПОУ - номер Єдиного Державного реєстру підриємців та організацій України.
+        description: >-
+          ЄДРПОУ - номер Єдиного Державного реєстру підриємців та організацій
+          України.
       primaryGLN:
         type: string
-        description: Основной GLN номер компании http://gs1ua.org/ua/gs1-system/identifikatsiya-ta-shtrihove-koduvannya/gln
+        description: >-
+          Основной GLN номер компании
+          http://gs1ua.org/ua/gs1-system/identifikatsiya-ta-shtrihove-koduvannya/gln
   CIC:
     description: Параметры для передачи статуса товара
     properties:
       providerGLN:
         type: string
-        description: GLN торговой сети, которая передает статус по товару
+        description: 'GLN торговой сети, которая передает статус по товару'
       GTIN:
         type: string
         description: штрихкод товара
       versionProduct:
         type: integer
-        description: версия товара которую обработала торговая сеть, берется из информации о товаре
+        description: >-
+          версия товара которую обработала торговая сеть, берется из информации
+          о товаре
       description:
         type: string
-        description: необязательный параметр, используется для описании ошибки.
+        description: 'необязательный параметр, используется для описании ошибки.'
       status:
         type: string
-        description: |
-          Название передается на английском языке из следующего списка [ACCEPTED, SYNCHROMIZED, REVIEW, REJECT].
-          ACCEPTED (ПОЛУЧЕНО) – информация о товаре получена торговой сетью, и рассматривается возможность внесения данной информации во внутреннюю систему учета
-          SYNCHRONIZED (ПОДТВЕРЖДЕНО) – информация о товаре получена торговой сетью и добавлена в их внутреннюю систему учета.
-          REVIEW (НА РАССМОТРЕНИИ, второе значение “Обнаружена ошибка”)- в информации о товаре обнаружена ошибка, товар не загружен во внутреннюю систему учета.
-          REJECT (ОТКЛОНЕНО) – торговая сеть не хочет получать информацию или обновления по данному товару
+        description: >
+          Название передается на английском языке из следующего списка
+          [ACCEPTED, SYNCHROMIZED, REVIEW, REJECT].
+
+          ACCEPTED (ПОЛУЧЕНО) – информация о товаре получена торговой сетью, и
+          рассматривается возможность внесения данной информации во внутреннюю
+          систему учета
+
+          SYNCHRONIZED (ПОДТВЕРЖДЕНО) – информация о товаре получена торговой
+          сетью и добавлена в их внутреннюю систему учета.
+
+          REVIEW (НА РАССМОТРЕНИИ, второе значение “Обнаружена ошибка”)- в
+          информации о товаре обнаружена ошибка, товар не загружен во внутреннюю
+          систему учета.
+
+          REJECT (ОТКЛОНЕНО) – торговая сеть не хочет получать информацию или
+          обновления по данному товару
   Product:
     type: object
     properties:
       GTIN:
         type: string
-        description: штрихкод товара в международном формате GDSN http://www.gs1.org/gtin
+        description: 'штрихкод товара в международном формате GDSN http://www.gs1.org/gtin'
       ReplacedTradeItemIdentification:
         type: string
-        description: штриход старого товара, который был заменен текущим товаром
+        description: 'штриход старого товара, который был заменен текущим товаром'
       InformationProviderGLN:
         type: string
-        description: GLN номер поставщика, который предоставил информацию о товаре в каталог
+        description: >-
+          GLN номер поставщика, который предоставил информацию о товаре в
+          каталог
   ProductImage:
     type: object
     properties:
       original:
         type: string
-        description: Временная ссылка на оринигальное изобрежение товара в оригинальном разрешении
+        description: >-
+          Временная ссылка на оринигальное изобрежение товара в оригинальном
+          разрешении
       600x600:
         type: string
-        description: Постоянная ссылка на изображение с разрешением 600х600рх хотя бы по одной из сторон
+        description: >-
+          Постоянная ссылка на изображение с разрешением 600х600рх хотя бы по
+          одной из сторон
       200x200:
         type: string
-        description: Постоянная ссылка на изображение с разрешением 200х200рх хотя бы по одной из сторон
+        description: >-
+          Постоянная ссылка на изображение с разрешением 200х200рх хотя бы по
+          одной из сторон
       50x50:
         type: string
-        description: Постоянная ссылка на изображение с разрешением 50х50рх хотя бы по одной из сторон
+        description: >-
+          Постоянная ссылка на изображение с разрешением 50х50рх хотя бы по
+          одной из сторон
       planograma:
         type: boolean
-        description: Флаг, который показывает является ли изображение планограмой
+        description: 'Флаг, который показывает является ли изображение планограмой'
   Error:
     type: object
     properties:
@@ -456,3 +668,28 @@ definitions:
         format: int32
       message:
         type: string
+  ClientActivityStatus:
+    type: object
+    properties:
+      firstActivityDate:
+        description: Дата первой активности
+        type: string
+      lastActivityDate:
+        description: Дата последней активности
+        type: string
+      refusalDate:
+        description: Дата отказа
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+      email:
+        description: Адрес электронной почты
+        type: string
+      comment:
+        description: Комментарий
+        type: string
+      regNumber:
+        type: string
+        description: ОКПО/ЄДРПОУ

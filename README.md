@@ -21,6 +21,9 @@
   * [(9.) Список GTIN базовых единиц, на которые была оформлена подписка](#10-Список-доступных-gtin-базовых-единиц-на-которые-была-оформлена-подписка)
   * [(10.) Кол-во подписок на товары](#9-Количество-подписок)
   * [(11.) Получение информации из справочников](#11-Расшифровка-значения-справочника)
+  * [(12.) Изображения одного товара](#12-Изображения-одного-товара)
+  * [(13.) Информация об активности поставщика](#13-Информация-об-активности-поставщика)
+  * [(14.) Информация об активности поставщиков](#14-Информация-об-активности-поставщиков)
 * [Пример ответа по одному товару](https://github.com/xainse/ucat-sync-api-doc#Пример-ответа-по-одному-товару)
 
 
@@ -464,6 +467,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```
 
 ### 11. Расшифровка значения справочника
+
 Можно передать код из любого справочника и в ответ получить название справочника и расшифровку значения.
 
 **Формат запроса**
@@ -487,6 +491,241 @@ https://client.ucat.com.ua/api-sync/v1/handbook/search/[код справочн�
     nameEn: "Box"
   }
 ]
+```
+
+## 12. Изображения одного товара
+
+В запросе на получение изображений нужно указать GTIN (штрихкод) товара.
+
+#### Формат запроса
+```html
+https://clients.ucat.com.ua/api-sync/v1/images/[GTIN]?authKey=<ключ авторизации>
+```
+Тип запроса: **GET**
+
+#### Пример ответа в формате JSON
+Если все параметры правильные, товар есть в базе и доступен
+```javascript
+[
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_p.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=KvOIyNVv9653BpEQIZ78yKc0GZI%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_p.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_p.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_p.jpg",
+    planogram: "true" // даный флаг, обозначает что фото сделано с лицевой стороны
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_2.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=DEC3H6nFVbtbiPeK%2BiKBACyz7do%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_2.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_2.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_2.jpg",
+    planogram: "false"
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_1.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=gfcdqDwapmgzBscmUW2HL9%2B3m1M%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_1.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_1.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_1.jpg",
+    planogram: "false"
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_3.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=GlqkfS841ZuEPbrqUId5%2FWUfvRk%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_3.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_3.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_3.jpg",
+    planogram: "false"
+  }
+]
+```
+
+Если товар не найден в базе или не доступен
+```javascript
+{
+  code: "404 Not Found",  
+  error: "Images not found"
+}
+```
+
+## 13. Информация об активности поставщика
+
+В запросе нужно указать номер ОКПО поставщика и ключ авторизации.
+
+#### Формат запроса
+```html
+https://clients.ucat.com.ua/api-sync/v1/manufacturer-activity?id=<ОКПО поставщика>&authKey=<ключ авторизации>
+```
+Тип запроса: **GET**
+
+#### Пример ответа в формате JSON
+Если параметры переданы правильно:
+```javascript
+{
+    "success": true,
+    "data": {
+        "item": {
+        "firstActivityDate": null,
+        "lastActivityDate": "2017-04-03",
+        "refusalDate": null,
+        "regNumber": "182863",
+        "name": "Житомирський маслозавод (рудь)",
+        "status": "Работают",
+        "comment": "прислала большой шаблон после заполнения, переслал Людмиле",
+        "email": null,
+        "tariffPlanName": null,
+        "tariffPlanEndDate": null
+        }
+    }
+}
+```
+Если параметры переданы с ошибкой, данные не доступны или не найдены, будет возвращена ошибка в таком формате:
+```javascript
+{
+    "success": false,
+    "data": null,
+    "message": "Data not found"
+}
+```
+
+## 14. Информация об активности поставщиков
+
+Из-за большого обьема данных предусмотрена возможность получать информацию частями указывая страницу.
+В запросе нужно указать номер страницы и ключ авторизации.
+
+#### Формат запроса
+```html
+https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер страницы>&authKey=<ключ авторизации>
+```
+Тип запроса: **GET**
+
+#### Пример ответа в формате JSON
+Если параметры переданы правильно:
+```javascript
+{
+    "success": true,
+    "data": {
+        "items": [
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2017-04-03",
+                "refusalDate": null,
+                "regNumber": "182863",
+                "name": "Житомирський маслозавод (рудь)",
+                "status": "Работают",
+                "comment": "прислала большой шаблон после заполнения, переслал Людмиле",
+                "email": null,
+                "tariffPlanName": null,
+                "tariffPlanEndDate": null
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2015-01-16",
+                "refusalDate": null,
+                "regNumber": "37016058",
+                "name": "РЕКТЕ",
+                "status": "Приостановлен",
+                "comment": "по замерам он сказал что в курсе",
+                "email": null,
+                "tariffPlanName": "Private",
+                "tariffPlanEndDate": "2015-10-07 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2015-03-16",
+                "refusalDate": null,
+                "regNumber": "35881156",
+                "name": "ПБС-Україна",
+                "status": "Приостановлен",
+                "comment": "работают по привату Таврии, будут подключаться если будут изменения по сетям, которые используют каталог в работе",
+                "email": null,
+                "tariffPlanName": "Private",
+                "tariffPlanEndDate": "2015-10-10 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2015-03-02",
+                "refusalDate": null,
+                "regNumber": "37117467",
+                "name": "Фітор Ко",
+                "status": "Приостановлен",
+                "comment": "проплатил полностью и погасил свій долг",
+                "email": null,
+                "tariffPlanName": "Private",
+                "tariffPlanEndDate": "2015-11-01 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2017-03-17",
+                "refusalDate": null,
+                "regNumber": "37010082",
+                "name": "Ал-Пластик",
+                "status": "Работают",
+                "comment": "спрашивал о публикации. Рассказал что всё готово и опубликовано.",
+                "email": "al-plastik.zhyzhko@ukr.net",
+                "tariffPlanName": "STANDARD - для клиентов Таврии",
+                "tariffPlanEndDate": "2015-11-01 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2015-10-29",
+                "refusalDate": null,
+                "regNumber": "31826636",
+                "name": "Ельба ",
+                "status": "Приостановлен",
+                "comment": "в общем они не знают будут ли работать и с Альянс маркетом и с Пакко",
+                "email": null,
+                "tariffPlanName": "Private",
+                "tariffPlanEndDate": "2015-11-17 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2015-01-15",
+                "refusalDate": null,
+                "regNumber": "38572699",
+                "name": "ВАІЕР ТОВ",
+                "status": "Приостановлен",
+                "comment": "перупредил о замерах",
+                "email": null,
+                "tariffPlanName": "Private",
+                "tariffPlanEndDate": "2015-11-04 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2017-02-14",
+                "refusalDate": null,
+                "regNumber": "34415111",
+                "name": "Ві ТА Ві Дизайн ТОВ",
+                "status": "Работают",
+                "comment": "без каталога пока обходятся по другим сетям кроме новуса",
+                "email": null,
+                "tariffPlanName": "Улюблений ритейлер",
+                "tariffPlanEndDate": "2016-12-31 00:00:00"
+            },
+            {
+                "firstActivityDate": null,
+                "lastActivityDate": "2016-10-05",
+                "refusalDate": null,
+                "regNumber": "37670844",
+                "name": "Амиго и C",
+                "status": "Работают",
+                "comment": "запросили АВР, отправили, все ок",
+                "email": "yuliya.shevel@amigotoys.com",
+                "tariffPlanName": null,
+                "tariffPlanEndDate": null
+            }
+        ],
+        "_links": {
+            "self": "https://client.ucat.com.ua/api-sync/v1/manufacturers-activity?page=1",
+            "next": "https://client.ucat.com.ua/api-sync/v1/manufacturers-activity?page=2",
+            "last": "https://client.ucat.com.ua/api-sync/v1/manufacturers-activity?page=143"
+        },
+        "_meta": {
+            "totalCount": "2843",
+            "pageCount": 143,
+            "currentPage": "1",
+            "perPage": 20
+        }
+    }
+}
 ```
 
 ## Пример ответа по одному товару
