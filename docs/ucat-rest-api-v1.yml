@@ -535,7 +535,7 @@ definitions:
       code:
         type: string
         description: code and title of error
-      message:
+      error:
         type: string
         description: text of the error
   Subscriptions:
