@@ -240,7 +240,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```javascript
   {
     "code" : "400", 
-    "message": "You donn\’t recive product of such version"
+    "error": "You donn\’t recive product of such version"
   }
 ```
 
@@ -278,7 +278,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```javascript
 {
   "code" : "403 Forbidden", 
-  "message": "Data of the product is not available to you"
+  "error": "Data of the product is not available to you"
 }
 ```
 
@@ -289,7 +289,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```javascript
   {
     "code" : "404 Not Found", 
-    "message": "Not exists product"
+    "error": "Not exists product"
   }
 ```
 
@@ -320,7 +320,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```javascript
   {
     "success":"true",
-    "message":"Файл загружен"
+    "error":"Файл загружен"
   }
 ```
 
@@ -331,7 +331,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```javascript
   {
     "success": "false",
-    "message": "Файл не загружен"
+    "error": "Файл не загружен"
   }
 ```
 
@@ -462,7 +462,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 ```javascript
   {
     "code" : "404 Not Found", 
-    "message": "Not isset subscription"
+    "error": "Not isset subscription"
   }
 ```
 
