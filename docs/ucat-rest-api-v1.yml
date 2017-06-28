@@ -31,6 +31,10 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Manufacturer'
+        '404':
+          description: Не найдены доступные поставщики
+          schema:
+            $ref: '#/definitions/Error'
   '/manufacturers/{gln}/products':
     get:
       summary: 2. Продукты одного Поставщика
@@ -60,6 +64,10 @@ paths:
             type: array
             items:
               $ref: '#/definitions/GLN'
+        '404':
+          description: Не найдены товары у поставщика
+          schema:
+            $ref: '#/definitions/Error'
   '/manufacturers/{GLN}/products/{GTIN}':
     get:
       summary: 3. Подробная информация о товаре
@@ -202,6 +210,12 @@ paths:
             и тот же товар поставляют разные дистрибьюторы
           schema:
             $ref: '#/definitions/Product'
+        '400':
+          description: >-
+            Не все параметры переданы / передан недоступный запрос / You have
+            not got data on this product
+          schema:
+            $ref: '#/definitions/Error'
         '404':
           description: Not Found
           schema:
@@ -257,7 +271,9 @@ paths:
           schema:
             $ref: '#/definitions/ChangedGTINs'
         '304':
-          description: Если нет новых и измененных товаров - код ответа 304
+          description: Если нет новых и измененных товаров - код ответа 304 Not Modified
+          schema:
+            $ref: '#/definitions/Error'
   /get-count-suscribe-product:
     get:
       summary: 9. Количество подписок
@@ -332,6 +348,10 @@ paths:
           description: Объект одной записи из справочников
           schema:
             $ref: '#/definitions/HandbookItem'
+        '404':
+          description: Не найден справочник
+          schema:
+            $ref: '#/definitions/NotFoundError'
   '/images/{GTIN}':
     get:
       summary: 12. Изображения одного товара
@@ -385,21 +405,23 @@ paths:
         - Поставщики
       responses:
         '200':
-          description: Объект с информацией об активности поставщика
+          description: >-
+            Object with information about client activity (Объект с информацией
+            об активности поставщика)
           schema:
             $ref: '#/definitions/ClientActivityStatus'
         '400':
           description: Invalid parameter value (Неправильные параметры запроса)
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorV2'
         '403':
           description: Data is not available (Информация недоступна)
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorV2'
         '404':
           description: Data not found (Информация не найдена)
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorV2'
   /manufacturers-activity:
     get:
       summary: 14. Информация об активности поставщиков
@@ -472,17 +494,17 @@ paths:
                       Amount of ClientActivityStatus per page (Количество
                       записей на 1 страницу)
         '400':
-          description: Неверны параметры запроса
+          description: Неверны параметры запроса (Invalid request parameters)
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorV2'
         '403':
-          description: Информация недоступна
+          description: Информация недоступна (Data is not available)
           schema:
-            $ref: '#/definitions/Error'
+            $ref: '#/definitions/ErrorV2'
         '404':
-          description: Информация не найдена
+          description: Информация не найдена (Data is not found)
           schema:
-            $ref: '#/definitions/NotFoundError'
+            $ref: '#/definitions/ErrorV2'
 definitions:
   GTIN:
     type: integer
@@ -513,7 +535,7 @@ definitions:
       code:
         type: string
         description: code and title of error
-      message:
+      error:
         type: string
         description: text of the error
   Subscriptions:
@@ -623,17 +645,676 @@ definitions:
   Product:
     type: object
     properties:
+      id:
+        type: string
+        description: uCat ID
       GTIN:
         type: string
-        description: 'штрихкод товара в международном формате GDSN http://www.gs1.org/gtin'
+        description: Штрих-код (EAN)
+      BarCodeType:
+        type: string
+        description: Тип штрих-кода
       ReplacedTradeItemIdentification:
         type: string
-        description: 'штриход старого товара, который был заменен текущим товаром'
+        description: 'Штрих-код, который использовался ранее для этого товара'
       InformationProviderGLN:
         type: string
+        description: GLN поставщика
+      InternalSupplierCode:
+        type: string
+        description: 'Внутренний код/SKU товара, присвоенный производителем'
+      BrandId:
+        type: string
         description: >-
-          GLN номер поставщика, который предоставил информацию о товаре в
-          каталог
+          ID-номер, фирменное наименование товара (популярная, легко-узнаваемая
+          и юридически защищённая символика товара)
+      BrandName:
+        type: string
+        description: Торговая марка/Бренд (Original)
+      ShortBrandName:
+        type: string
+        description: Фирменное наименование товара в краткой форме
+      LanguageSpecificBrandNameRu:
+        type: string
+        description: Торговая марка/Бренд (Ru)
+      LanguageSpecificBrandNameUk:
+        type: string
+        description: Торговая марка/Бренд (Uk)
+      LanguageSpecificBrandNameEn:
+        type: string
+        description: Торговая марка/Бренд (En)
+      SubBrandId:
+        type: string
+        description: 'ID-номер, торговая марка более низкого уровня'
+      SubBrand:
+        type: string
+        description: Торговая марка более низкого уровня/Саббренд
+      LanguageSpecificShortBrandNameRu:
+        type: string
+        description: Бренд в краткой форме (Ru)
+      LanguageSpecificShortBrandNameUk:
+        type: string
+        description: Бренд в краткой форме (Uk)
+      LanguageSpecificShortBrandNameEn:
+        type: string
+        description: Бренд в краткой форме (En)
+      DescriptionTextRu:
+        type: string
+        description: Полное наименование (Ru)
+      DescriptionTextUk:
+        type: string
+        description: Полное наименование (Uk)
+      DescriptionTextEn:
+        type: string
+        description: Полное наименование (En)
+      ShortDescriptionTextRu:
+        type: string
+        description: Наименование товара в краткой форме (Ru)
+      ShortDescriptionTextUk:
+        type: string
+        description: Наименование товара в краткой форме (Uk)
+      ShortDescriptionTextEn:
+        type: string
+        description: Наименование товара в краткой форме (En)
+      OriginalDescriptionRu:
+        type: string
+        description: Название согласно технической документации (Ru)
+      OriginalDescriptionUk:
+        type: string
+        description: Название согласно технической документации (Uk)
+      OriginalDescriptionEn:
+        type: string
+        description: Название согласно технической документации (En)
+      SEODescriptionRu:
+        type: string
+        description: SEO описание товара (Ru)
+      SEODescriptionEn:
+        type: string
+        description: SEO описание товара (En)
+      SEODescriptionUk:
+        type: string
+        description: SEO описание товара (Uk)
+      ShortAdditionalNameUk20:
+        type: string
+        description: >-
+          Дополнительное наименование товара в краткой форме (20 символов),
+          позволяющее определить его как единицу продажи. Указывается на
+          ценниках и чеках (на украинском)
+      ShortAdditionalNameUk60:
+        type: string
+        description: >-
+          Дополнительное наименование товара в краткой форме (60 символов),
+          позволяющее определить его как единицу продажи. Указывается на
+          ценниках и чеках (на украинском)
+      AdditionalTradeItemDescriptionRu:
+        type: string
+        description: Дополнительное описание/Состав (Ru)
+      AdditionalTradeItemDescriptionUk:
+        type: string
+        description: Дополнительное описание/Состав (Uk)
+      AdditionalTradeItemDescriptionEn:
+        type: string
+        description: Дополнительное описание/Состав (En)
+      Brick:
+        type: string
+        description: >-
+          Категория, к которой относится товар по своему функциональному
+          назначению/Класс GS1
+      FunctionalNameTextRu:
+        type: string
+        description: >-
+          Категория, к которой относится товар по своему функциональному
+          назначению (Ru)
+      FunctionalNameTextUk:
+        type: string
+        description: >-
+          Категория, к которой относится товар по своему функциональному
+          назначению (Uk)
+      FunctionalNameTextEn:
+        type: string
+        description: >-
+          Категория, к которой относится товар по своему функциональному
+          назначению (En)
+      UkrZed:
+        type: string
+        description: Код УТК ВЭД
+      DKPP:
+        type: string
+        description: Код ГКПУ
+      UkrMonopoly:
+        type: string
+        description: Код Монополии
+      UkrStatistics:
+        type: string
+        description: Код Статистики
+      FirstOptAnnualReport:
+        type: string
+        description: >-
+          Код для отчета по форме 1-опт "Отчет о продаже и запасах товаров
+          (продукции) в оптовой торговле"
+      FirstRtReport:
+        type: string
+        description: >-
+          Код для отчета по форме №1-РТ "Отчет об объемах приобретения и
+          реализации табачных изделий в розничной сети"
+      IsAPrivateLabel:
+        type: integer
+        description: Товар собственная марка
+      IsAConsumerUnit:
+        type: integer
+        description: Единица продажи
+      IsTradeItemABaseUnit:
+        type: integer
+        description: Базовая единица
+      IsAnOrderableUnit:
+        type: integer
+        description: Единица заказа
+      IsADespatchUnit:
+        type: integer
+        description: Единица отгрузки
+      IsAVariableUnit:
+        type: integer
+        description: Весовой товар
+      IsUnitWithAverageValues:
+        type: integer
+        description: Товар со средними значениями
+      EffectiveDate:
+        type: string
+        description: Вступление информации в силу
+      PublicationDate:
+        type: string
+        description: Доступность для просмотра и синхронизации
+      StartAvailabilityDateTime:
+        type: string
+        description: Первая разрешенная продажа поставщиком
+      EndAvailabilityDateTime:
+        type: string
+        description: Дата окончания доступности товара
+      ConsumerAvailabilityDateTime:
+        type: string
+        description: Начало продажи товара потребителю
+      OrderQuantityMinimum:
+        type: string
+        description: >-
+          Минимальное количество единиц товара, которое может быть заказано.
+          Только для заказываемой единицы
+      WidthValue:
+        type: string
+        description: Ширина
+      WidthUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      DepthValue:
+        type: string
+        description: Длина/глубина
+      DepthUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      HeightValue:
+        type: string
+        description: Высота
+      HeightUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      NetWeightValue:
+        type: string
+        description: 'Вес, без упаковки'
+      NetWeightUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      ToleranceMinValue:
+        type: string
+        description: Допустимое отклонение в весе в меньшую сторону
+      ToleranceMinUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      ToleranceMaxValue:
+        type: string
+        description: Допустимое отклонение в весе в большую сторону
+      ToleranceMaxUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      GrossWeightValue:
+        type: string
+        description: 'Вес, включая упаковку'
+      GrossWeightUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      NetContentValue:
+        type: string
+        description: Чистое содержимое
+      NetContentUoM:
+        type: string
+        description: Единица объема по справочнику ContentUnitOfMeasureCodeList
+      IsPackagingMarkedReturnable:
+        type: integer
+        description: Многоразовое использование
+      PackagingType:
+        type: string
+        description: Тип упаковки
+      PackagingMaterial:
+        type: string
+        description: Материал упаковки
+      IsPriceOnPack:
+        type: integer
+        description: Указана ли цена на упаковке
+      ChildGTIN:
+        type: string
+        description: >-
+          GTIN единицы более низкого уровня, содержащейся в данной единице
+          упаковки
+      QuantityOfChild:
+        type: string
+        description: >-
+          Количество единиц более низкого уровня, содержащихся в данной единице
+          упаковки
+      CountryOfOrigin:
+        type: integer
+        description: Страна происхождения
+      CountryOfLastProcessing:
+        type: integer
+        description: 'Код страны, в которой товар проходил последнюю обработку'
+      VATRate:
+        type: integer
+        description: 'Ставка НДС, %'
+      VATRateRU:
+        type: integer
+        description: 'Ставка НДС для Российской Федерации, %'
+      ManufacturerUcatId:
+        type: string
+        description: ID производителя товара
+      ManufacturerGLN:
+        type: string
+        description: GLN производителя товара
+      ManufacturerNameRu:
+        type: string
+        description: Наименование производителя товара (Ru)
+      ManufacturerNameUk:
+        type: string
+        description: Наименование производителя товара (Uk)
+      ManufacturerNameEn:
+        type: string
+        description: Наименование производителя товара (En)
+      ManufacturingPlantGLN:
+        type: string
+        description: GLN места производства товара
+      TargetMarketCountryCode:
+        type: integer
+        description: Рынок сбыта продукции
+      TargetMarketSubDivisionCode:
+        type: string
+        description: Предполагаемый рынок сбыта продукции
+      MinimumLifespanFromArrival:
+        type: integer
+        description: Срок хранения с момента поступления
+      MinimumLifespanFromProduction:
+        type: integer
+        description: Срок годности
+      MinimumLifespanFromProductionValue:
+        type: string
+        description: Срок годности
+      StorageHandlingTemperatureMaximum:
+        type: string
+        description: Максимальная температура хранения
+      StorageHandlingTemperatureMinimum:
+        type: string
+        description: Минимальная температура хранения
+      MinimumLifespanFromProductionUoM:
+        type: string
+        description: Единица времени по справочнику TimeUnitOfMeasureCodeList
+      OpenedTradeItemLifespanValue:
+        type: string
+        description: Максимальное количество дней хранения товара после открытия
+      OpenedTradeItemLifespanUoM:
+        type: string
+        description: Единица времени по справочнику TimeUnitOfMeasureCodeList
+      LifespanFromProductionGroup1Value:
+        type: string
+        description: Срок годности 1 (дни)
+      MaximumStorageHandlingTemperatureGroup1:
+        type: string
+        description: Максимальная температура хранения для срока годности 1 (°C)
+      MinimumStorageHandlingTemperatureGroup1:
+        type: string
+        description: Минимальная температура хранения для срока годности 1 (°C)
+      LifespanFromProductionGroup2Value:
+        type: string
+        description: Срок годности 2 (дни)
+      MaximumStorageHandlingTemperatureGroup2:
+        type: string
+        description: Максимальная температура хранения для срока годности 2 (°C)
+      MinimumStorageHandlingTemperatureGroup2:
+        type: string
+        description: Минимальная температура хранения для срока годности 2 (°C)
+      LifespanFromProductionGroup3Value:
+        type: string
+        description: Срок годности 3 (дни)
+      MaximumStorageHandlingTemperatureGroup3:
+        type: string
+        description: Максимальная температура хранения для срока годности 3 (°C)
+      MinimumStorageHandlingTemperatureGroup3:
+        type: string
+        description: Минимальная температура хранения для срока годности 3 (°C)
+      LifespanFromProductionGroup4Value:
+        type: string
+        description: Срок годности 4 (дни)
+      MaximumStorageHandlingTemperatureGroup4:
+        type: string
+        description: Максимальная температура хранения для срока годности 4 (°C)
+      MinimumStorageHandlingTemperatureGroup4:
+        type: string
+        description: Минимальная температура хранения для срока годности 4 (°C)
+      DeliveryToMarketTemperatureMaximum:
+        type: string
+        description: >-
+          Максимальная температура при транспортировке товара на место
+          реализации
+      DeliveryToMarketTemperatureMinimum:
+        type: string
+        description: Минимальная температура при транспортировке товара на место реализации
+      ConsumerUsageStorageInstructionsRu:
+        type: string
+        description: Условия хранения (Ru)
+      ConsumerUsageStorageInstructionsUk:
+        type: string
+        description: Условия хранения (Uk)
+      ConsumerUsageStorageInstructionsEn:
+        type: string
+        description: Условия хранения (En)
+      Wetness:
+        type: string
+        description: Влажность хранения
+      CheeseFat:
+        type: string
+        description: Массовая доля жира
+      GeneticallyModified:
+        type: string
+        description: Содержание ГМО
+      CaloricValue:
+        type: string
+        description: Энергетическая ценность в 100 гр. продукта (ккал)
+      Fats:
+        type: string
+        description: Количество жиров в 100 гр. продукта
+      Carbs:
+        type: string
+        description: Количество углеводов в 100 гр. продукта
+      Proteins:
+        type: string
+        description: Количество белков в 100 гр. продукта
+      PercentageOfAlcohol:
+        type: string
+        description: 'Содержание спирта, &nbsp;&#37;'
+      DSTU:
+        type: string
+        description: Номер ДСТУ
+      HazardClass:
+        type: string
+        description: Класс опасности ООН
+      TU:
+        type: string
+        description: Номер ТУ
+      Sugar:
+        type: string
+        description: Количество сахара в 100 гр. продукта
+      NonGTINPalletDepthValue:
+        type: string
+        description: Длина/глубина паллеты включая упаковку
+      NonGTINPalletDepthUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      NonGTINPalletWidthValue:
+        type: string
+        description: 'Ширина паллеты, включая упаковку'
+      NonGTINPalletWidthUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      NonGTINPalletHeightValue:
+        type: string
+        description: 'Высота паллеты, включая упаковку'
+      NonGTINPalletHeightUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      NonGTINPalletLayerHeightValue:
+        type: string
+        description: Высота слоя паллеты
+      NonGTINPalletLayerHeightUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      NonGTINPalletGrossWeightValue:
+        type: string
+        description: Общий вес паллеты с упаковкой
+      NonGTINPalletGrossWeightUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      NonGTINPalletAdditionalWeightValue:
+        type: string
+        description: Вес дополнительного упаковочного материала для паллеты
+      NonGTINPalletAdditionalWeightUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      NonGTINPalletLayerWeightValue:
+        type: string
+        description: Вес слоя паллеты
+      NonGTINPalletType:
+        type: string
+        description: Тип паллеты
+      QuantityOfTradeItemsPerPallet:
+        type: string
+        description: Количество единиц на паллете
+      QuantityOfLayersPerPallet:
+        type: string
+        description: Количество слоев в паллете
+      QuantityOfTradeItemsPerPalletLayer:
+        type: string
+        description: Количество единиц в слое
+      NonGTINPalletTermsAndConditions:
+        type: string
+        description: Метод использования паллеты
+      NonGTINPalletStackingFactor:
+        type: string
+        description: Коэффициент штабелируемости
+      IsBasePriceDeclarationRelevant:
+        type: integer
+        description: Есть ли соответствующее объявление о базовой цене
+      IsTradeItemSeasonal:
+        type: integer
+        description: Является ли предложение на товар сезонным
+      UnitDescriptor:
+        type: string
+        description: Уровень иерархии упаковки товара
+      PromotionalTypeCode:
+        type: string
+        description: Тип промо-упаковки
+      NonPromotionalItem:
+        type: string
+        description: 'Штрих-код товара, который не является промо в упаковке'
+      FreeQuantityOfProduct:
+        type: string
+        description: >-
+          Заполняется в том случае если, промо на этот товар является скидка или
+          дисконт, или какая то часть товара в подарок
+      FreeQuantityOfProductUoM:
+        type: string
+        description: 'Единица измерения, связанная с бесплатной частью продукта'
+      FreeQuantityOfNextLowerLevelTradeItem:
+        type: string
+        description: Общее количество предметов торговли в комбинированной промо-упаковке
+      FreeQuantityOfNextLowerLevelTradeItemUoM:
+        type: string
+        description: 'Единица измерения, связанная с бесплатной частью продукта'
+      hasImg:
+        type: integer
+        description: Есть ли фотографии к товару
+      version:
+        type: integer
+      IsMeasured:
+        type: integer
+        description: Измерено на CubiScan
+      TestedStatus:
+        type: integer
+      DistributorName:
+        type: array
+        description: Дистрибьютор
+        items:
+          $ref: '#/definitions/ClientDeliveryProviderNames'
+      ImporterName:
+        type: array
+        description: Импортер
+        items:
+          $ref: '#/definitions/ClientDeliveryProviderNames'
+      LogisticOperatorName:
+        type: array
+        description: Логистический оператор
+        items:
+          $ref: '#/definitions/ClientDeliveryProviderNames'
+      ProductionCapacityAddressRu:
+        type: string
+        description: Адрес производственной мощности (Ru)
+      ProductionCapacityAddressUk:
+        type: string
+        description: Адрес производственной мощности (Uk)
+      ProductionCapacityAddressEn:
+        type: string
+        description: Адрес производственной мощности (En)
+      VariantNumber:
+        type: string
+        description: Номер варианта
+      VariantName:
+        type: string
+        description: Название варианта
+      NonGTINPalletNetHeightValue:
+        type: string
+        description: 'Высота паллеты, не включая упаковку'
+      NonGTINPalletNetHeightUoM:
+        type: string
+        description: Единица измерения длины по справочнику DimensionUnitOfMeasureCodeList
+      NonGTINPalletNetWeightValue:
+        type: string
+        description: Общий вес паллеты без упаковки
+      NonGTINPalletNetWeightUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      ProductStatus:
+        type: string
+        description: Признак ассортимента
+      DateResetProductStatus:
+        type: string
+        description: Дата снятия признака ассортимента
+      IsBlocked:
+        type: integer
+        description: Блокировка товара
+      BlockingStartDate:
+        type: string
+        description: Дата начала блокировки товара
+      BlockingEndDate:
+        type: string
+        description: Дата окончания блокировки товара
+      DescriptionBlockingText:
+        type: string
+        description: Комментарий к блокировке
+      IsDiabetic:
+        type: integer
+        description: Продукт диабетического питания
+      ingredientValue1:
+        type: string
+        description: 'Значение ингредиента 1,&nbsp;%'
+      ingredientValue2:
+        type: string
+        description: 'Значение ингредиента 2,&nbsp;%'
+      ingredientValue3:
+        type: string
+        description: 'Значение ингредиента 3,&nbsp;%'
+      ingredientValue4:
+        type: string
+        description: 'Значение ингредиента 4,&nbsp;%'
+      ingredientValue5:
+        type: string
+        description: 'Значение ингредиента 5,&nbsp;%'
+      ingredientValue6:
+        type: string
+        description: 'Значение ингредиента 6,&nbsp;%'
+      ingredientValue7:
+        type: string
+        description: 'Значение ингредиента 7,&nbsp;%'
+      ingredientValue8:
+        type: string
+        description: 'Значение ингредиента 8,&nbsp;%'
+      Season:
+        type: string
+        description: Сезон
+      Collection:
+        type: string
+        description: Коллекция
+      Size:
+        type: string
+        description: Размер
+      Color:
+        type: string
+        description: Цвет
+      IsActual:
+        type: integer
+        description: Актуальность товара
+      ActualityDate:
+        type: string
+        description: Дата подтверждения актуальности товара
+      IsSample:
+        type: integer
+        description: Образец
+      DescriptionProductRu:
+        type: string
+        description: Описание товара (Ru)
+      DescriptionProductEn:
+        type: string
+        description: Описание товара (En)
+      DescriptionProductUk:
+        type: string
+        description: Описание товара (Uk)
+      Fragrance:
+        type: string
+        description: Аромат
+      TypeProduct:
+        type: string
+        description: Вид продукции
+      TypePollution:
+        type: string
+        description: Вид загрязнения
+      TypeWash:
+        type: string
+        description: Вид стирки
+      ApplicationTime:
+        type: string
+        description: Время применения
+      Classification:
+        type: string
+        description: Классификация
+      Density:
+        type: string
+        description: Плотность
+      Gender:
+        type: string
+        description: Пол
+      TypeUsing:
+        type: string
+        description: Применение
+      SortingLaundry:
+        type: string
+        description: Сортировка белья
+      TypeHair:
+        type: string
+        description: Тип волос
+      TypeSurface:
+        type: string
+        description: Тип поверхности
+      TypeSkin:
+        type: string
+        description: Тип кожи
+      Age:
+        type: string
+        description: Возраст
+      ChildWeight:
+        type: string
+        description: Вес ребенка
   ProductImage:
     type: object
     properties:
@@ -664,8 +1345,17 @@ definitions:
     type: object
     properties:
       code:
-        type: integer
-        format: int32
+        type: string
+      error:
+        type: string
+  ErrorV2:
+    type: object
+    properties:
+      success:
+        type: boolean
+        default: 'false'
+      data:
+        description: Информация
       message:
         type: string
   ClientActivityStatus:
@@ -693,3 +1383,15 @@ definitions:
       regNumber:
         type: string
         description: ОКПО/ЄДРПОУ
+  ClientDeliveryProviderNames:
+    type: object
+    properties:
+      nameRu:
+        type: string
+        description: Название Ru
+      nameUk:
+        type: string
+        description: Название Uk
+      nameEn:
+        type: string
+        description: Название En
