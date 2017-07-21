@@ -1394,6 +1394,9 @@ definitions:
             name:
               type: string
               description: Название клиента
+      tariffPlanEndDate:
+        type: string
+        description: Дата окончания тарифного плана
   ClientDeliveryProviderNames:
     type: object
     properties:
