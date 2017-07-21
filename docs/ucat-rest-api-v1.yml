@@ -899,10 +899,7 @@ definitions:
         type: integer
         description: Указана ли цена на упаковке
       ChildGTIN:
-        type: string
-        description: >-
-          GTIN единицы более низкого уровня, содержащейся в данной единице
-          упаковки
+        $ref: '#/definitions/Product'
       QuantityOfChild:
         type: string
         description: >-
@@ -1383,6 +1380,20 @@ definitions:
       regNumber:
         type: string
         description: ОКПО/ЄДРПОУ
+      tariffPlanName:
+        type: string
+        description: Название тарифного плана
+      limitClientList:
+        type: array
+        items:
+          type: object
+          properties:
+            gln:
+              type: string
+              description: GLN клиента
+            name:
+              type: string
+              description: Название клиента
   ClientDeliveryProviderNames:
     type: object
     properties:
