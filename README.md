@@ -571,7 +571,21 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturer-activity?id=<ОКПО по�
         "status": "Работают",
         "comment": "прислала большой шаблон после заполнения, переслал Людмиле",
         "email": null,
-        "tariffPlanName": null,
+        "tariffPlanName": "Мої ритейлери, 4-5 ритейлери, 201-300 SKU",
+        "limitClientList": [
+            {
+                "name": "Атлантіс (Алеф-Віналь)",
+                "gln": "4820024220002"
+            },
+            {
+                "name": "Штраус Україна",
+                "gln": "4820082500009"
+            },
+            {
+                "name": "Арда трейдінг",
+                "gln": "4823052500009"
+            }
+        ],
         "tariffPlanEndDate": null
         }
     }
@@ -614,6 +628,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "прислала большой шаблон после заполнения, переслал Людмиле",
                 "email": null,
                 "tariffPlanName": null,
+                "limitClientList": null,
                 "tariffPlanEndDate": null
             },
             {
@@ -625,7 +640,21 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "status": "Приостановлен",
                 "comment": "по замерам он сказал что в курсе",
                 "email": null,
-                "tariffPlanName": "Private",
+                "tariffPlanName": "Мої ритейлери, 4-5 ритейлери, 201-300 SKU",
+                "limitClientList": [
+                    {
+                        "name": "Атлантіс (Алеф-Віналь)",
+                        "gln": "4820024220002"
+                    },
+                    {
+                        "name": "Штраус Україна",
+                        "gln": "4820082500009"
+                    },
+                    {
+                        "name": "Арда трейдінг",
+                        "gln": "4823052500009"
+                    }
+                ],
                 "tariffPlanEndDate": "2015-10-07 00:00:00"
             },
             {
@@ -638,6 +667,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "работают по привату Таврии, будут подключаться если будут изменения по сетям, которые используют каталог в работе",
                 "email": null,
                 "tariffPlanName": "Private",
+                "limitClientList": null,
                 "tariffPlanEndDate": "2015-10-10 00:00:00"
             },
             {
@@ -650,6 +680,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "проплатил полностью и погасил свій долг",
                 "email": null,
                 "tariffPlanName": "Private",
+                "limitClientList": null,
                 "tariffPlanEndDate": "2015-11-01 00:00:00"
             },
             {
@@ -662,6 +693,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "спрашивал о публикации. Рассказал что всё готово и опубликовано.",
                 "email": "al-plastik.zhyzhko@ukr.net",
                 "tariffPlanName": "STANDARD - для клиентов Таврии",
+                "limitClientList": null,
                 "tariffPlanEndDate": "2015-11-01 00:00:00"
             },
             {
@@ -674,6 +706,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "в общем они не знают будут ли работать и с Альянс маркетом и с Пакко",
                 "email": null,
                 "tariffPlanName": "Private",
+                "limitClientList": null,
                 "tariffPlanEndDate": "2015-11-17 00:00:00"
             },
             {
@@ -686,6 +719,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "перупредил о замерах",
                 "email": null,
                 "tariffPlanName": "Private",
+                "limitClientList": null,
                 "tariffPlanEndDate": "2015-11-04 00:00:00"
             },
             {
@@ -698,6 +732,20 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "без каталога пока обходятся по другим сетям кроме новуса",
                 "email": null,
                 "tariffPlanName": "Улюблений ритейлер",
+                "limitClientList": [
+                    {
+                        "name": "Атлантіс (Алеф-Віналь)",
+                        "gln": "4820024220002"
+                    },
+                    {
+                        "name": "Штраус Україна",
+                        "gln": "4820082500009"
+                    },
+                    {
+                        "name": "Арда трейдінг",
+                        "gln": "4823052500009"
+                    }
+                ],
                 "tariffPlanEndDate": "2016-12-31 00:00:00"
             },
             {
@@ -710,6 +758,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
                 "comment": "запросили АВР, отправили, все ок",
                 "email": "yuliya.shevel@amigotoys.com",
                 "tariffPlanName": null,
+                "limitClientList": null,
                 "tariffPlanEndDate": null
             }
         ],
