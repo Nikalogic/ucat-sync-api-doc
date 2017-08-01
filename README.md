@@ -341,9 +341,13 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 
 **Формат запроса:**
 ```html
-  https://client.ucat.com.ua/api-sync/v1/last-changed-gtins?authKey=[ключ_авторизации]
+  https://client.ucat.com.ua/api-sync/v1/last-changed-gtins?onlyApiDistribution=<только_товары_полученные_по_API>&authKey=[ключ_авторизации]
 ```
 Тип запроса: **GET**
+
+**Параметры запроса**
+
+* **onlyApiDistribution** - не обязательный параметр запроса. При передаче параметра onlyApiDistribution=__true__ учитываются только товары полученные посредством API (json). По умолчанию учитываются все способы передачи данных (onlyApiDistribution=__false__).
 
 **Примеры ответов:**
 Ответ сгруппирован по  производителям и измененным и новым товарам.

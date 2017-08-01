@@ -263,6 +263,12 @@ paths:
           description: ключ авторизации
           required: true
           type: string
+        - name: onlyApiDistribution
+          in: query
+          description: Запрос на товары, получанные только по API
+          type: string
+          default: false
+          required: false
       tags:
         - Продукты
       responses:
