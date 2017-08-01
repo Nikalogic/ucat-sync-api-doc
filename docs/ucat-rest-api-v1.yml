@@ -263,6 +263,12 @@ paths:
           description: ключ авторизации
           required: true
           type: string
+        - name: onlyApiDistribution
+          in: query
+          description: Запрос на товары, получанные только по API
+          type: string
+          default: false
+          required: false
       tags:
         - Продукты
       responses:
@@ -899,10 +905,7 @@ definitions:
         type: integer
         description: Указана ли цена на упаковке
       ChildGTIN:
-        type: string
-        description: >-
-          GTIN единицы более низкого уровня, содержащейся в данной единице
-          упаковки
+        $ref: '#/definitions/Product'
       QuantityOfChild:
         type: string
         description: >-
@@ -1383,6 +1386,23 @@ definitions:
       regNumber:
         type: string
         description: ОКПО/ЄДРПОУ
+      tariffPlanName:
+        type: string
+        description: Название тарифного плана
+      limitClientList:
+        type: array
+        items:
+          type: object
+          properties:
+            gln:
+              type: string
+              description: GLN клиента
+            name:
+              type: string
+              description: Название клиента
+      tariffPlanEndDate:
+        type: string
+        description: Дата окончания тарифного плана
   ClientDeliveryProviderNames:
     type: object
     properties:
