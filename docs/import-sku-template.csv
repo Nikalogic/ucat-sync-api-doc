@@ -1,0 +1,2 @@
+Наименование товара,Артикул,Единица измерения,Штрих-код товара,GLN поставщика,Артикул производителя,Наименование поставщика,ОКПО,Статус товара
+name,retailerSKU,unit,GTIN,manufacturerGLN,providerSKU,nameManufacturer,OKPO,retailerStatus
