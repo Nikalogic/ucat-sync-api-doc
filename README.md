@@ -347,7 +347,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 
 **Параметры запроса**
 
-* **onlyApiDistribution** - не обязательный параметр запроса. При передаче параметра onlyApiDistribution=__true__ учитываются только товары полученные посредством API (json). По умолчанию учитываются все способы передачи данных (onlyApiDistribution=__false__).
+* **onlyApiDistribution** - не обязательный параметр запроса. При передаче параметра onlyApiDistribution=**true** учитываются только товары полученные посредством API (json). По умолчанию учитываются все способы передачи данных (onlyApiDistribution=**false**).
 
 **Примеры ответов:**
 Ответ сгруппирован по  производителям и измененным и новым товарам.
@@ -503,7 +503,7 @@ https://client.ucat.com.ua/api-sync/v1/handbook/search/[код справочн�
 
 #### Формат запроса
 ```html
-https://clients.ucat.com.ua/api-sync/v1/images/[GTIN]?authKey=<ключ авторизации>
+https://client.ucat.com.ua/api-sync/v1/images/[GTIN]?authKey=<ключ авторизации>
 ```
 Тип запроса: **GET**
 
@@ -556,7 +556,7 @@ https://clients.ucat.com.ua/api-sync/v1/images/[GTIN]?authKey=<ключ авто
 
 #### Формат запроса
 ```html
-https://clients.ucat.com.ua/api-sync/v1/manufacturer-activity?id=<ОКПО поставщика>&authKey=<ключ авторизации>
+https://client.ucat.com.ua/api-sync/v1/manufacturer-activity?id=<ОКПО поставщика>&authKey=<ключ авторизации>
 ```
 Тип запроса: **GET**
 
@@ -778,6 +778,64 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер 
             "perPage": 20
         }
     }
+}
+```
+
+## 15. Информация о сертификатах
+
+В запросе нужно указывать GTIN (штрих-код) товара и ключ авторизации
+
+#### Формат запроса
+
+```html
+https://client.ucat.com.ua/api-sync/v1/products/<GTIN>/certificates?authKey=<ключ_авторзации>
+```
+
+Тип запроса: **GET**
+
+#### Пример успешного ответа:
+
+```javascript
+[
+    {
+        "gtin": 6411200108344,
+        "informationProviderGln": 4829900017231,
+        "brandName": "Nordic",
+        "description": "Висівки вівсяні Nordic 700г",
+        "certificateType": "Сертификат соответствия",
+        "activeTillDate": "2014-07-17 00:00:00",
+        "certificateNumber": "UA1.003.X007908.13",
+        "sku": "1112717",
+        "files": [
+            "http://ucat-test.s3-eu-west-1.amazonaws.com/clients/0000228/certificates/cert-4829900017231-1-68.pdf?AWSAccessKeyId=AKIAJIMBSKJ2WTNIOXZQ&Signature=jYk5epPZz28zP7tkW1dXTCFfrrk%3D&Expires=1502367082"
+        ]
+    },
+    {
+        "gtin": 6411200108344,
+        "informationProviderGln": 4829900017231,
+        "brandName": "Nordic",
+        "description": "Висівки вівсяні Nordic 700г",
+        "certificateType": "Гигиеническое заключение",
+        "activeTillDate": "2016-09-25 00:00:00",
+        "certificateNumber": "05.03.02-03/87301",
+        "sku": "1112717",
+        "files": [
+            "http://ucat-test.s3-eu-west-1.amazonaws.com/clients/0000228/certificates/cert-4829900017231-53abe89ec5b92-49.pdf?AWSAccessKeyId=AKIAJIMBSKJ2WTNIOXZQ&Signature=GV1DZw6sNJjxS8AenBcjfd%2FQA7E%3D&Expires=1502367082"
+        ]
+    }
+]
+```
+
+**Если не найдены сертификаты, в ответе будет пустой JSON массив, а не ошибка**
+
+### Ответы в случае ошибки
+
+Если не найден товар, возвращается соответствующая ошибка 404
+
+```javascript
+{
+    "code": "404 Not Found",
+    "error": "Product not found"
 }
 ```
 

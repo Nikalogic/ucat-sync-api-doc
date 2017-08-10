@@ -511,6 +511,65 @@ paths:
           description: Информация не найдена (Data is not found)
           schema:
             $ref: '#/definitions/ErrorV2'
+  '/products/{GTIN}/certificates':
+    get:
+      summary: 15. Информация о сертификатах продукта по штрих-коду
+      description: Запрос возвращает информацию о сертификатах продукта
+      produces:
+        - application/json
+      parameters:
+        - name: GTIN
+          in: path
+          description: GTIN(штрихкод) товара
+          type: string
+          required: true
+        - name: authKey
+          in: query
+          description: Ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Сертификаты
+      responses:
+        '200':
+          description: Массив обьектов или пустой массив (у товара нету сертификатов)
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                gtin:
+                  type: string
+                informationProviderGln:
+                  type: string
+                  description: GLN поставщика
+                brandName:
+                  type: string
+                  description: Название бренда
+                description:
+                  type: string
+                  description: Описание
+                certificateType:
+                  type: string
+                  description: Текстовое описание типа сертификата
+                activeTillDate:
+                  type: string
+                  description: Дата окончания действия сертификата
+                certificateNumber:
+                  type: string
+                  description: Номер сертификата
+                sku:
+                  type: string
+                  description: Артикул товара
+                files:
+                  description: Массив ссылок на файлы сертификата
+                  type: array
+                  items:
+                    type: string
+        '404':
+          description: Товар не найден
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   GTIN:
     type: integer
