@@ -452,7 +452,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 
 **Формат запроса:**
 ```html
-  https://client.ucat.com.ua/api-sync/v1/get-count-subscribe-product?authKey={ключ_авторизации}
+  https://client.ucat.com.ua/api-sync/v1/get-subscribe-product-gtin?authKey={ключ_авторизации}
 
 ``` 
 
