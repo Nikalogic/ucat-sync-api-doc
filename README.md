@@ -452,7 +452,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 
 **Формат запроса:**
 ```html
-  https://client.ucat.com.ua/api-sync/v1/get-count-subscribe-product?authKey={ключ_авторизации}
+  https://client.ucat.com.ua/api-sync/v1/get-subscribe-product-gtin?authKey={ключ_авторизации}
 
 ``` 
 
@@ -462,13 +462,14 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компа
 - тело ответа: 
 
 ```javascript
-[
-  "GTIN1",
-  "GTIN2",
-  "GTIN3",
+{
+  "0":"GTIN1",
+  "1":"GTIN2",
+  "2":"GTIN3",
+  "3":"GTIN4",
     ...
-  "GTIN5"
-]
+  "999...":"GTIN999..."
+}
 ```
 2) Если у Торговой Сети не оформленна подписка на товары или товары не доступны по другим причинам, выводиться ошибка
 - код ответа сервера: 404 Not Found
