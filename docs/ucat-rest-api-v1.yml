@@ -265,7 +265,7 @@ paths:
           type: string
         - name: onlyApiDistribution
           in: query
-          description: Запрос на товары, получанные только по API
+          description: 'Запрос на товары, полученные только по API'
           type: string
           default: false
           required: false
@@ -964,6 +964,10 @@ definitions:
         type: integer
         description: Указана ли цена на упаковке
       ChildGTIN:
+        type: object
+        description: >-
+          Единица более низкого уровня, которая содержится в даной единице
+          упаковки
         $ref: '#/definitions/Product'
       QuantityOfChild:
         type: string
@@ -1110,9 +1114,6 @@ definitions:
       DSTU:
         type: string
         description: Номер ДСТУ
-      HazardClass:
-        type: string
-        description: Класс опасности ООН
       TU:
         type: string
         description: Номер ТУ
@@ -1215,6 +1216,15 @@ definitions:
         description: Измерено на CubiScan
       TestedStatus:
         type: integer
+      NumberOfBaseUnitsInPackagingInWidth:
+        type: integer
+        description: 'Количество базовых единиц товара в упаковке по ширине, шт'
+      NumberOfBaseUnitsInPackagingInDepth:
+        type: integer
+        description: 'Количество базовых единиц товара в упаковке по длине/глубине, шт'
+      NumberOfBaseUnitsInPackagingInHeight:
+        type: integer
+        description: 'Количество базовых единиц товара в упаковке по высоте, шт'
       DistributorName:
         type: array
         description: Дистрибьютор
@@ -1323,6 +1333,12 @@ definitions:
       IsSample:
         type: integer
         description: Образец
+      LastPhotoDate:
+        type: string
+        description: Дата и время обновления фотографии
+      LastMeasurementDate:
+        type: string
+        description: Дата и время обновления замеров
       DescriptionProductRu:
         type: string
         description: Описание товара (Ru)
@@ -1377,6 +1393,9 @@ definitions:
       ChildWeight:
         type: string
         description: Вес ребенка
+      HazardClass:
+        type: string
+        description: Класс опасности ООН
   ProductImage:
     type: object
     properties:
