@@ -143,7 +143,7 @@ authKey | ключ доступа
 
 #### Формат запроса
 ```html
-https://clients.ucat.com.ua/api-sync/v1/manufacturers/{GLN-номер компании}/products/{GTIN}?fields=<список полей через запятую>authKey=<ключ авторизации>
+https://client.ucat.com.ua/api-sync/v1/manufacturers/{GLN-номер компании}/products/{GTIN}?fields=<список полей через запятую>authKey=<ключ авторизации>
 ```
 Тип запроса: **GET**
 
@@ -164,7 +164,7 @@ https://clients.ucat.com.ua/api-sync/v1/manufacturers/{GLN-номер компа
 
 #### Формат запроса
 ```html
-https://clients.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компании]/products/[GTIN]/images?authKey=<ключ авторизации>
+https://client.ucat.com.ua/api-sync/v1/manufacturers/[GLN-номер компании]/products/[GTIN]/images?authKey=<ключ авторизации>
 ```
 Тип запроса: **GET**
 
@@ -623,7 +623,7 @@ https://client.ucat.com.ua/api-sync/v1/manufacturer-activity?id=<ОКПО пос
 
 #### Формат запроса
 ```html
-https://clients.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер страницы>&authKey=<ключ авторизации>
+https://client.ucat.com.ua/api-sync/v1/manufacturers-activity?page=<номер страницы>&authKey=<ключ авторизации>
 ```
 Тип запроса: **GET**
 
@@ -819,7 +819,7 @@ https://client.ucat.com.ua/api-sync/v1/products/<GTIN>/certificates?authKey=<к�
         "certificateNumber": "UA1.003.X007908.13",
         "sku": "1112717",
         "files": [
-            "http://ucat-test.s3-eu-west-1.amazonaws.com/clients/0000228/certificates/cert-4829900017231-1-68.pdf?AWSAccessKeyId=AKIAJIMBSKJ2WTNIOXZQ&Signature=jYk5epPZz28zP7tkW1dXTCFfrrk%3D&Expires=1502367082"
+            "http://ucat-test.s3-eu-west-1.amazonaws.com/client/0000228/certificates/cert-4829900017231-1-68.pdf?AWSAccessKeyId=AKIAJIMBSKJ2WTNIOXZQ&Signature=jYk5epPZz28zP7tkW1dXTCFfrrk%3D&Expires=1502367082"
         ]
     },
     {
@@ -832,7 +832,7 @@ https://client.ucat.com.ua/api-sync/v1/products/<GTIN>/certificates?authKey=<к�
         "certificateNumber": "05.03.02-03/87301",
         "sku": "1112717",
         "files": [
-            "http://ucat-test.s3-eu-west-1.amazonaws.com/clients/0000228/certificates/cert-4829900017231-53abe89ec5b92-49.pdf?AWSAccessKeyId=AKIAJIMBSKJ2WTNIOXZQ&Signature=GV1DZw6sNJjxS8AenBcjfd%2FQA7E%3D&Expires=1502367082"
+            "http://ucat-test.s3-eu-west-1.amazonaws.com/client/0000228/certificates/cert-4829900017231-53abe89ec5b92-49.pdf?AWSAccessKeyId=AKIAJIMBSKJ2WTNIOXZQ&Signature=GV1DZw6sNJjxS8AenBcjfd%2FQA7E%3D&Expires=1502367082"
         ]
     }
 ]
@@ -1154,7 +1154,7 @@ https://client.ucat.com.ua/api-sync/v1/products/<GTIN>/certificates?authKey=<к�
                 }
             ],
             Certificates: null,
-            InformationProviderLogo: "https://ucat-live.s3-eu-west-1.amazonaws.com/clients.public/0000042/logo/logo-4820163120003.jpg",
+            InformationProviderLogo: "https://ucat-live.s3-eu-west-1.amazonaws.com/client.public/0000042/logo/logo-4820163120003.jpg",
             IsAnInvoiceUnit: "true",
             PublicURL: {
                 ru: "https://ucat.com.ua/ru/postavshchiki/ooo-ukrainskaya-distributorskaya-kompaniya/brendi-shustov-150-ordinarnyi-40-05l-4820000944281",
@@ -1331,7 +1331,7 @@ https://client.ucat.com.ua/api-sync/v1/products/<GTIN>/certificates?authKey=<к�
             link: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/00000077174_prod/images/600x600_prod_00000077174_3.jpg"
         }
     ],
-    InformationProviderLogo: "https://ucat-live.s3-eu-west-1.amazonaws.com/clients.public/0000042/logo/logo-4820163120003.jpg",
+    InformationProviderLogo: "https://ucat-live.s3-eu-west-1.amazonaws.com/client.public/0000042/logo/logo-4820163120003.jpg",
     IsAnInvoiceUnit: "false",
     PublicURL: null
     }
