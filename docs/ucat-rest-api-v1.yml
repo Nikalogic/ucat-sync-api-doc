@@ -710,9 +710,9 @@ definitions:
   Product:
     type: object
     properties:
-      id:
+      ucatID:
         type: string
-        description: uCat ID
+        description: Идентификатор uCat
       GTIN:
         type: string
         description: Штрих-код (EAN)
@@ -805,12 +805,24 @@ definitions:
           Дополнительное наименование товара в краткой форме (20 символов),
           позволяющее определить его как единицу продажи. Указывается на
           ценниках и чеках (на украинском)
+      ShortAdditionalNameRu60:
+        type: string
+        description: >-
+          Дополнительное наименование товара в краткой форме (60 символов),
+          позволяющее определить его как единицу продажи. Указывается на
+          ценниках и чеках (на русском)
       ShortAdditionalNameUk60:
         type: string
         description: >-
           Дополнительное наименование товара в краткой форме (60 символов),
           позволяющее определить его как единицу продажи. Указывается на
           ценниках и чеках (на украинском)
+      ShortAdditionalNameEn60:
+        type: string
+        description: >-
+          Дополнительное наименование товара в краткой форме (60 символов),
+          позволяющее определить его как единицу продажи. Указывается на
+          ценниках и чеках (на английском)
       AdditionalTradeItemDescriptionRu:
         type: string
         description: Дополнительное описание/Состав (Ru)
@@ -877,6 +889,9 @@ definitions:
       IsADespatchUnit:
         type: integer
         description: Единица отгрузки
+      IsOrderQuantityMinimumMultiples:
+        type: integer
+        description: Является ли минимальный заказ кратным
       IsAVariableUnit:
         type: integer
         description: Весовой товар
@@ -1019,15 +1034,15 @@ definitions:
       MinimumLifespanFromProductionValue:
         type: string
         description: Срок годности
+      MinimumLifespanFromProductionUoM:
+        type: string
+        description: Единица времени по справочнику TimeUnitOfMeasureCodeList
       StorageHandlingTemperatureMaximum:
         type: string
         description: Максимальная температура хранения
       StorageHandlingTemperatureMinimum:
         type: string
         description: Минимальная температура хранения
-      MinimumLifespanFromProductionUoM:
-        type: string
-        description: Единица времени по справочнику TimeUnitOfMeasureCodeList
       OpenedTradeItemLifespanValue:
         type: string
         description: Максимальное количество дней хранения товара после открытия
@@ -1070,6 +1085,12 @@ definitions:
       MinimumStorageHandlingTemperatureGroup4:
         type: string
         description: Минимальная температура хранения для срока годности 4 (°C)
+      WarrantyPeriodValue:
+        type: string
+        description: Гарантийный срок годности
+      WarrantyPeriodUoM:
+        type: string
+        description: Единица времени по справочнику TimeUnitOfMeasureCodeList
       DeliveryToMarketTemperatureMaximum:
         type: string
         description: >-
@@ -1111,12 +1132,21 @@ definitions:
       PercentageOfAlcohol:
         type: string
         description: 'Содержание спирта, &nbsp;&#37;'
+      AlcoholClass:
+        type: string
+        description: Класс алкоголя
       DSTU:
         type: string
         description: Номер ДСТУ
       TU:
         type: string
         description: Номер ТУ
+      GSTU:
+        type: string
+        description: Номер ГСТУ
+      SOU:
+        type: string
+        description: Номер СОУ
       Sugar:
         type: string
         description: Количество сахара в 100 гр. продукта
@@ -1216,6 +1246,14 @@ definitions:
         description: Измерено на CubiScan
       TestedStatus:
         type: integer
+      TypeOfProductPlacementInBox:
+        type: integer
+        description: Тип укладки товара в ящике
+      OrientationTypeOnShelf:
+        type: string
+        description: >-
+          Сторона размещения упаковки на полке относительно лицевой стороны
+          базовой единицы товара по справочнику "Сторона размещения на полке"
       NumberOfBaseUnitsInPackagingInWidth:
         type: integer
         description: 'Количество базовых единиц товара в упаковке по ширине, шт'
@@ -1225,6 +1263,9 @@ definitions:
       NumberOfBaseUnitsInPackagingInHeight:
         type: integer
         description: 'Количество базовых единиц товара в упаковке по высоте, шт'
+      PackagingPerforationType:
+        type: integer
+        description: Тип перфорации упаковки
       DistributorName:
         type: array
         description: Дистрибьютор
@@ -1396,6 +1437,9 @@ definitions:
       HazardClass:
         type: string
         description: Класс опасности ООН
+      CustomAttributeExists:
+        type: string
+        description: Данные для сети
   ProductImage:
     type: object
     properties:
