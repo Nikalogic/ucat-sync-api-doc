@@ -147,7 +147,7 @@ authKey | ключ доступа
 
 #### Формат запроса
 ```html
-https://client.ucat.com.ua/api-sync/v1/manufacturers/{GLN-номер компании}/products/{идентификатор_товара}?fields=<список полей через запятую>authKey=<ключ авторизации>
+https://client.ucat.com.ua/api-sync/v1/manufacturers/{GLN-номер компании}/products/{идентификатор_товара}?fields=<список полей через запятую>&authKey=<ключ авторизации>
 ```
 Тип запроса: **GET**
 
