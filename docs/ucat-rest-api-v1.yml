@@ -966,6 +966,15 @@ definitions:
       NetContentUoM:
         type: string
         description: Единица объема по справочнику ContentUnitOfMeasureCodeList
+      DryMassOfMainProductValue:
+        type: string
+        description: Сухая масса основного продукта. Масса основного продукта без жидкости.
+      DryMassOfMainProductUoM:
+        type: string
+        description: Единица веса по справочнику WeightUnitOfMeasureCodeList
+      QuantityOfBaseUnit:
+        type: integer
+        description: 'Количество базовых единиц, содержащихся в данной упаковке'
       IsPackagingMarkedReturnable:
         type: integer
         description: Многоразовое использование
