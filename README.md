@@ -25,6 +25,7 @@
   * [(13.) Информация об активности поставщика](#13-Информация-об-активности-поставщика)
   * [(14.) Информация об активности поставщиков](#14-Информация-об-активности-поставщиков)
   * [(15.) Информация о сертификатах](#15-Информация-о-сертификатах)
+  * [(16.) Изображения одного товара по уникальному идентификатору (ucatID)](#16-Изображения-одного-товара-по-уникальному-идентификатору-(ucatID))
 * [Пример ответа по одному товару](https://github.com/xainse/ucat-sync-api-doc#Пример-ответа-по-одному-товару)
 
 
@@ -133,6 +134,7 @@ authKey | ключ доступа
 (13.) Информация об активности поставщика|GET|/manufacturer-activity|Запрос возвращает информацию про поставщика по ОКПО
 (14.) Информация об активности поставщиков|GET|/manufacturers-activity|Запрос возвращает информацию про поставщиков с постраничной навигацией
 (15.) Информация о сертификатах|GET|/products/<GTIN>/certificates|Запрос возвращает информацию о сертификатах продукта
+(16.) Изображения одного товара по уникальному идентификатору (ucatID)|GET|/images-by-id/<ucatID>|Информация о доступных изображениях товара в разных разрешениях.
 
 ### 3. Подробная информация о товарной позиции
 
@@ -858,6 +860,60 @@ https://client.ucat.com.ua/api-sync/v1/products/{GTIN}/certificates?authKey=<к�
     "error": "Product not found"
 }
 ```
+
+## 16. Изображения одного товара по уникальному идентификатору (ucatID)
+
+В запросе на получение изображений нужно указать ucatID (уникальный идентификатор) товара.
+
+#### Формат запроса
+```html
+https://client.ucat.com.ua/api-sync/v1/images-by-id/{ucatID}?authKey=<ключ авторизации>
+```
+Тип запроса: **GET**
+
+#### Пример ответа в формате JSON
+Если все параметры правильные, товар есть в базе и доступен
+```javascript
+[
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_p.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=KvOIyNVv9653BpEQIZ78yKc0GZI%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_p.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_p.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_p.jpg",
+    planogram: "true" // даный флаг, обозначает что фото сделано с лицевой стороны
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_2.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=DEC3H6nFVbtbiPeK%2BiKBACyz7do%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_2.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_2.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_2.jpg",
+    planogram: "false"
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_1.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=gfcdqDwapmgzBscmUW2HL9%2B3m1M%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_1.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_1.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_1.jpg",
+    planogram: "false"
+  },
+  {
+    original: "https://ucat-live.s3-eu-west-1.amazonaws.com/products/04820000944281/images/04820000944281_3.jpg?AWSAccessKeyId=AKIAIPT3T5GLJRUDEZPA&Signature=GlqkfS841ZuEPbrqUId5%2FWUfvRk%3D&Expires=1486987484",
+    600x600: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/600x600_04820000944281_3.jpg",
+    200x200: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/200x200_04820000944281_3.jpg",
+    50x50: "https://ucat-live.s3-eu-west-1.amazonaws.com/products.public/04820000944281/images/50x50_04820000944281_3.jpg",
+    planogram: "false"
+  }
+]
+```
+
+Если товар не найден в базе или не доступен
+```javascript
+{
+  code: "404 Not Found",  
+  error: "Images not found"
+}
+```
+
 
 ## Пример ответа по одному товару
 

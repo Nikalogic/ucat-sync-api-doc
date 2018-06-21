@@ -379,7 +379,7 @@ paths:
         - Изображения
       responses:
         '200':
-          description: Массив изображений товара разных расрешений
+          description: Массив изображений товара в разных разрешениях
           schema:
             type: array
             items:
@@ -570,6 +570,38 @@ paths:
           description: Товар не найден
           schema:
             $ref: '#/definitions/Error'
+  '/images-by-id/{ucatID}':
+    get:
+      summary: 16. Изображения одного товара по уникальному идентификатору (ucatID)
+      description: Информация о доступных изображениях товара в разных разрешениях
+      produces:
+        - application/json
+      parameters:
+        - name: ucatID
+          in: path
+          description: ucatID(идентификатор) товара
+          type: string
+          required: true
+        - name: authKey
+          in: query
+          description: Ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Изображения
+      responses:
+        '200':
+          description: Массив изображений товара в разных разрешениях
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductImage'
+        '404':
+          description: >-
+            Product or its images not found (Товар или его изображения не
+            найдены)
+          schema:
+            $ref: '#/definitions/NotFoundError'
 definitions:
   GTIN:
     type: integer
