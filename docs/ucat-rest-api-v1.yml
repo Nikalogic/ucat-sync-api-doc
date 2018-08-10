@@ -379,7 +379,7 @@ paths:
         - Изображения
       responses:
         '200':
-          description: Массив изображений товара разных расрешений
+          description: Массив изображений товара в разных разрешениях
           schema:
             type: array
             items:
@@ -570,6 +570,38 @@ paths:
           description: Товар не найден
           schema:
             $ref: '#/definitions/Error'
+  '/images-by-id/{ucatID}':
+    get:
+      summary: 16. Изображения одного товара по уникальному идентификатору (ucatID)
+      description: Информация о доступных изображениях товара в разных разрешениях
+      produces:
+        - application/json
+      parameters:
+        - name: ucatID
+          in: path
+          description: ucatID(идентификатор) товара
+          type: string
+          required: true
+        - name: authKey
+          in: query
+          description: Ключ авторизации
+          required: true
+          type: string
+      tags:
+        - Изображения
+      responses:
+        '200':
+          description: Массив изображений товара в разных разрешениях
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ProductImage'
+        '404':
+          description: >-
+            Product or its images not found (Товар или его изображения не
+            найдены)
+          schema:
+            $ref: '#/definitions/NotFoundError'
 definitions:
   GTIN:
     type: integer
@@ -711,7 +743,7 @@ definitions:
     type: object
     properties:
       ucatID:
-        type: string
+        type: integer
         description: Идентификатор uCat
       GTIN:
         type: string
@@ -1000,16 +1032,16 @@ definitions:
           упаковки
       CountryOfOrigin:
         type: integer
-        description: Страна происхождения
+        description: Страна производства
       CountryOfLastProcessing:
         type: integer
         description: 'Код страны, в которой товар проходил последнюю обработку'
       VATRate:
         type: integer
-        description: 'Ставка НДС, %'
+        description: 'Ставка НДС для Украины, (%)'
       VATRateRU:
         type: integer
-        description: 'Ставка НДС для Российской Федерации, %'
+        description: 'Ставка НДС для РФ, (%)'
       ManufacturerUcatId:
         type: string
         description: ID производителя товара
