@@ -743,7 +743,7 @@ definitions:
     type: object
     properties:
       ucatID:
-        type: string
+        type: integer
         description: Идентификатор uCat
       GTIN:
         type: string
@@ -1032,16 +1032,16 @@ definitions:
           упаковки
       CountryOfOrigin:
         type: integer
-        description: Страна происхождения
+        description: Страна производства
       CountryOfLastProcessing:
         type: integer
         description: 'Код страны, в которой товар проходил последнюю обработку'
       VATRate:
         type: integer
-        description: 'Ставка НДС, %'
+        description: 'Ставка НДС для Украины, (%)'
       VATRateRU:
         type: integer
-        description: 'Ставка НДС для Российской Федерации, %'
+        description: 'Ставка НДС для РФ, (%)'
       ManufacturerUcatId:
         type: string
         description: ID производителя товара
